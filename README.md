@@ -45,7 +45,7 @@ The contents of the configuration file use `YAML` syntax, and the file extension
 
 ### Example
 
-[Example](example.pack).
+[Example](examples/apps.pack).
 
 ## License
 

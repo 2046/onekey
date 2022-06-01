@@ -1,5 +1,6 @@
 import axios from 'axios'
 import yaml from 'js-yaml'
+import crypto from 'crypto'
 import { extname } from 'path'
 import { IGist } from './types'
 import { lstatSync, readFile } from 'fs'
@@ -61,6 +62,30 @@ export async function loadFile(filePath: string) {
 
 export function parse(text: string) {
   return text ? yaml.load(text) : {}
+}
+
+export function toInt(text: string) {
+  return text ? parseInt(text, 10) : 0
+}
+
+export function encrypt(data: string, password: string) {
+  const algorithm = 'aes-256-cbc'
+  const iv = crypto.createHash('md5').update(password).digest()
+  const key = crypto.createHash('sha256').update(password).digest()
+  const cipher = crypto.createCipheriv(algorithm, key, iv)
+  const encryptedData = cipher.update(data, 'utf8', 'hex')
+
+  return `${encryptedData}${cipher.final('hex')}`
+}
+
+export function decrypt(data: string, password: string) {
+  const algorithm = 'aes-256-cbc'
+  const iv = crypto.createHash('md5').update(password).digest()
+  const key = crypto.createHash('sha256').update(password).digest()
+  const decipher = crypto.createDecipheriv(algorithm, key, iv)
+  const decryptedData = decipher.update(data, 'hex', 'utf8')
+
+  return `${decryptedData}${decipher.final('utf8')}`
 }
 
 function resolveGist(filePath: string) {
