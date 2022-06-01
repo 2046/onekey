@@ -45,27 +45,7 @@ The contents of the configuration file use `YAML` syntax, and the file extension
 
 ### Example
 
-```yml
-- type: app
-  name: Google Chrome
-  downloadUrl: 'https://dl.google.com/chrome/mac/universal/stable/CHFA/googlechrome.dmg'
-  action:
-    - install
-- type: app
-  name: Notion
-  downloadUrl:
-    - - intel
-      - 'https://www.notion.so/desktop/mac/download'
-    - - arm
-      - 'https://www.notion.so/desktop/apple-silicon/download'
-  action:
-    - install
-- type: command
-  description: enable three finger drag
-  cmd:
-    - defaults -currentHost write NSGlobalDomain com.apple.trackpad.threeFingerSwipeGesture -int 1
-    - defaults write NSGlobalDomain com.apple.trackpad.threeFingerSwipeGesture -int 1
-```
+[Example](example.pack).
 
 ## License
 
