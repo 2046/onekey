@@ -2,6 +2,7 @@ import os from 'os'
 import axios from 'axios'
 import yaml from 'js-yaml'
 import crypto from 'crypto'
+import Progress from 'progress'
 import { IGist } from './types'
 import { extname, join } from 'path'
 import { mkdtemp } from 'fs/promises'
@@ -92,6 +93,16 @@ export function decrypt(data: string, password: string) {
 
 export async function tmpdir() {
   return await mkdtemp(join(os.tmpdir(), 'download'))
+}
+
+export function createProgressBar(total: number) {
+  return new Progress('-> downloading [:bar] :percent :etas', {
+    total,
+    width: 40,
+    complete: '=',
+    incomplete: ' ',
+    renderThrottle: 1,
+  })
 }
 
 function resolveGist(filePath: string) {
