@@ -1,8 +1,10 @@
+import os from 'os'
 import axios from 'axios'
 import yaml from 'js-yaml'
 import crypto from 'crypto'
-import { extname } from 'path'
 import { IGist } from './types'
+import { extname, join } from 'path'
+import { mkdtemp } from 'fs/promises'
 import { lstatSync, readFile } from 'fs'
 
 export function isPackFile(filePath: string) {
@@ -86,6 +88,10 @@ export function decrypt(data: string, password: string) {
   const decryptedData = decipher.update(data, 'hex', 'utf8')
 
   return `${decryptedData}${decipher.final('utf8')}`
+}
+
+export async function tmpdir() {
+  return await mkdtemp(join(os.tmpdir(), 'download'))
 }
 
 function resolveGist(filePath: string) {
