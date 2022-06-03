@@ -16,8 +16,14 @@ export interface IGist {
 export interface IDownloadOption {
   url: string
   dir: string
-  fileName: string
-  onError: (error: AxiosError) => void
   onComplete: (filePath: string) => void
+  onError: (error: AxiosError | Error) => void
   onProgress: (chunk: Buffer, size: number) => void
+}
+
+export interface IPackOpition {
+  name: string
+  action: Array<string>
+  type: 'command' | 'app'
+  downloadUrl: string | Array<Array<string>>
 }
