@@ -23,7 +23,9 @@ export interface IDownloadOption {
 
 export interface IPackOpition {
   name: string
+  description: string
   action: Array<string>
   type: 'command' | 'app'
+  cmd: string | Array<string>
   downloadUrl: string | Array<Array<string>>
 }

@@ -3,10 +3,10 @@ import axios from 'axios'
 import yaml from 'js-yaml'
 import crypto from 'crypto'
 import Progress from 'progress'
-import { IGist } from './types'
 import { extname, join } from 'path'
 import { mkdtemp } from 'fs/promises'
 import { lstatSync, readFile } from 'fs'
+import { IGist, IPackOpition } from './types'
 
 export function isPackFile(filePath: string) {
   return extname(filePath) === '.pack'
@@ -40,7 +40,7 @@ export function isGistFile(filePath: string) {
   return !!(names.length === 2 && names[0] && names[1])
 }
 
-export async function loadFile(filePath: string) {
+export function loadFile(filePath: string) {
   return new Promise<string>((resolve, reject) => {
     if (isLocallyFile(filePath)) {
       readFile(filePath, 'utf8', (err, data) => (err ? reject(err) : resolve(data)))
@@ -63,8 +63,8 @@ export async function loadFile(filePath: string) {
   })
 }
 
-export function parse(text: string) {
-  return text ? yaml.load(text) : {}
+export function parse<T = never>(text: string): T {
+  return (text ? yaml.load(text) : {}) as T
 }
 
 export function toInt(text: string) {
@@ -103,6 +103,18 @@ export function createProgressBar(total: number) {
     incomplete: ' ',
     renderThrottle: 1,
   })
+}
+
+export function isAppType(obj: IPackOpition) {
+  return obj.type === 'app'
+}
+
+export function isCommandType(obj: IPackOpition) {
+  return obj.type === 'command'
+}
+
+export function isAppleCPU() {
+  return os.cpus()[0].model.includes('Apple')
 }
 
 function resolveGist(filePath: string) {
