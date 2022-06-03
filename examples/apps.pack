@@ -7,9 +7,9 @@
   name: Notion
   downloadUrl:
     - - intel
-      - 'https://www.notion.so/desktop/mac/download'
+      - 'https://desktop-release.notion-static.com/Notion-2.0.22.dmg'
     - - arm
-      - 'https://www.notion.so/desktop/apple-silicon/download'  
+      - 'https://desktop-release.notion-static.com/Notion-2.0.21-arm64.dmg'
   action:
     - install
 - type: command
