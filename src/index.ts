@@ -1,5 +1,5 @@
-import chalk from 'chalk'
-import Progress from 'progress'
+import echo from './echo'
+import { basename } from 'path'
 import download from './download'
 import { exec } from 'child_process'
 import { IPackOpition } from './types'
@@ -7,63 +7,57 @@ import {
   isPackFile,
   loadFile,
   parse,
-  decrypt,
   tmpdir,
+  decrypt,
+  returned,
   isAppType,
+  capitalize,
   isAppleCPU,
   isCommandType,
   createProgressBar,
 } from './utils'
 
 const [filePath = '', password = ''] = process.argv.slice(2)
+const fileName = basename(filePath)
 
-if (!isPackFile(filePath)) {
-  console.error(chalk.red('The file format is incorrect, please use the .pack file format.'))
+if (!returned(isPackFile(filePath), echo.loading(`Loading ${fileName} file`))) {
+  echo.error('The file format is incorrect, please use the .pack file format.')
   process.exit(1)
 }
 
 ;(async function () {
   try {
-    const dir = await tmpdir()
-    let text = await loadFile(filePath)
+    let text = returned(await loadFile(filePath), echo.loading(`${capitalize(fileName)} file loading complete`))
 
     if (password) {
-      text = decrypt(text, password)
+      text = returned(decrypt(text, password), echo.loading(`Decrypt ${fileName} file`))
     }
 
-    for (const obj of parse<Array<IPackOpition>>(text)) {
-      if (isAppType(obj)) {
-        await executeDownloadAndInstall(obj, dir)
-      } else if (isCommandType(obj)) {
-        await executeCommand(obj)
+    const dir = await tmpdir()
+    const tasks = returned(parse<Array<IPackOpition>>(text), echo.loading(`Parsing ${fileName} file`))
+
+    for (const task of tasks) {
+      if (isAppType(task)) {
+        await executeDownloadAndInstall(task, dir)
+      } else if (isCommandType(task)) {
+        await executeCommand(task)
       }
     }
   } catch (error) {
-    console.info(error)
+    if (error instanceof Error) {
+      echo.error(error.message)
+    }
   }
 })()
 
-function executeDownloadAndInstall(
-  obj: IPackOpition,
-  dir: string,
-  progressBar: null | Progress = null
-) {
+function executeDownloadAndInstall(obj: IPackOpition, dir: string, rate = 0) {
   return new Promise((resolve, reject) => {
     download({
       dir,
       url: getDownloadUrl(obj.downloadUrl),
-      onComplete: (filePath) => {
-        console.info(filePath)
-        resolve(filePath)
-      },
-      onProgress: (chunk, size) => {
-        if (!progressBar) {
-          progressBar = createProgressBar(size)
-        }
-
-        progressBar.tick(chunk.length)
-      },
       onError: (error) => reject(error),
+      onComplete: (filePath) => resolve(filePath),
+      onProgress: (chunk, size) => echo.progress(obj.name, (rate += chunk.length), size),
     })
   })
 }

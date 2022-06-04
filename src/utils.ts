@@ -2,7 +2,6 @@ import os from 'os'
 import axios from 'axios'
 import yaml from 'js-yaml'
 import crypto from 'crypto'
-import Progress from 'progress'
 import { extname, join } from 'path'
 import { mkdtemp } from 'fs/promises'
 import { lstatSync, readFile } from 'fs'
@@ -51,14 +50,15 @@ export function loadFile(filePath: string) {
         .catch((error) => reject(error))
     } else if (isGistFile(filePath)) {
       const [userName, gistName] = resolveGist(filePath)
+      const url = `https://api.github.com/users/${userName}/gists`
 
       axios
-        .get<Array<IGist>>(`https://api.github.com/users/${userName}/gists`)
+        .get<Array<IGist>>(url)
         .then(({ data }) => getGistRawUrl(data, gistName))
         .then(async (url) => resolve(await loadFile(url)))
         .catch((error) => reject(error))
     } else {
-      resolve('')
+      reject(new Error('File not found'))
     }
   })
 }
@@ -69,6 +69,11 @@ export function parse<T = never>(text: string): T {
 
 export function toInt(text: string) {
   return text ? parseInt(text, 10) : 0
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function returned<T>(result: T, _: void) {
+  return result
 }
 
 export function encrypt(data: string, password: string) {
@@ -95,16 +100,6 @@ export async function tmpdir() {
   return await mkdtemp(join(os.tmpdir(), 'download'))
 }
 
-export function createProgressBar(total: number) {
-  return new Progress('-> downloading [:bar] :percent :etas', {
-    total,
-    width: 40,
-    complete: '=',
-    incomplete: ' ',
-    renderThrottle: 1,
-  })
-}
-
 export function isAppType(obj: IPackOpition) {
   return obj.type === 'app'
 }
@@ -115,6 +110,10 @@ export function isCommandType(obj: IPackOpition) {
 
 export function isAppleCPU() {
   return os.cpus()[0].model.includes('Apple')
+}
+
+export function capitalize(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
 function resolveGist(filePath: string) {

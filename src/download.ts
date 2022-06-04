@@ -8,9 +8,7 @@ export default function download(options: IDownloadOption) {
   const fileName = basename(options.url)
 
   if (!extname(fileName)) {
-    return options.onError(
-      new Error('The download url format is invalid, must contain the ext name')
-    )
+    return options.onError(new Error('The download url format is invalid, must contain the ext name'))
   }
 
   axios
