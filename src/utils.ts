@@ -58,7 +58,7 @@ export function loadFile(filePath: string) {
         .then(async (url) => resolve(await loadFile(url)))
         .catch((error) => reject(error))
     } else {
-      reject(new Error('File not found'))
+      reject(new Error('The file not found'))
     }
   })
 }
@@ -69,11 +69,6 @@ export function parse<T = never>(text: string): T {
 
 export function toInt(text: string) {
   return text ? parseInt(text, 10) : 0
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function returned<T>(result: T, _: void) {
-  return result
 }
 
 export function encrypt(data: string, password: string) {
@@ -112,8 +107,8 @@ export function isAppleCPU() {
   return os.cpus()[0].model.includes('Apple')
 }
 
-export function capitalize(text: string) {
-  return text.charAt(0).toUpperCase() + text.slice(1)
+export function calcPercent(rate: number, total: number) {
+  return Math.floor(Math.min(Math.max(rate / total, 0), 1) * 100).toFixed(0)
 }
 
 function resolveGist(filePath: string) {

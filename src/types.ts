@@ -29,3 +29,10 @@ export interface IPackOpition {
   cmd: string | Array<string>
   downloadUrl: string | Array<Array<string>>
 }
+
+export type IListrContext = {
+  text: string
+  tmpdir: string
+  tasks: Array<IPackOpition>
+  filePaths: Map<string, string>
+}

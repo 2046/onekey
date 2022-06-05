@@ -13,7 +13,7 @@
   action:
     - install
 - type: command
-  description: enable three finger drag
+  description: Enable three finger drag
   cmd:
     - defaults -currentHost write NSGlobalDomain com.apple.trackpad.threeFingerSwipeGesture -int 1
     - defaults write NSGlobalDomain com.apple.trackpad.threeFingerSwipeGesture -int 1
