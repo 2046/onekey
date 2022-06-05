@@ -70,7 +70,7 @@ const fileName = basename(filePath)
       }
     },
     {
-      title: 'Generate Download Directory',
+      title: 'Generate Temporary Download Directory',
       task: async (ctx: IListrContext) => {
         try {
           ctx.tmpdir = await tmpdir()
