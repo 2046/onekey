@@ -13,12 +13,18 @@ export interface IGist {
   }
 }
 
+export type ProgressEvent = {
+  total: number
+  loaded: number
+  percent: string
+}
+
 export interface IDownloadOption {
   url: string
   dir: string
   onComplete: (filePath: string) => void
   onError: (error: AxiosError | Error) => void
-  onProgress: (chunk: Buffer, size: number) => void
+  onProgress?: (progressEvent: ProgressEvent) => void
 }
 
 export interface IPackOpition {

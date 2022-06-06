@@ -14,10 +14,21 @@ export default function download(options: IDownloadOption) {
   axios
     .get<NodeJS.ReadableStream>(options.url, { responseType: 'stream' })
     .then((res) => {
+      let loaded = 0
       const filePath = join(options.dir, fileName)
-      const size = toInt(res.headers['content-length'])
+      const total = toInt(res.headers['content-length'])
 
-      res.data.on('data', (chunk: Buffer) => options.onProgress(chunk, size))
+      res.data.on('data', (chunk: Buffer) => {
+        if (options.onProgress) {
+          loaded = loaded + chunk.length
+
+          options.onProgress({
+            total,
+            loaded,
+            percent: Math.floor(Math.min(Math.max(loaded / total, 0), 1) * 100).toFixed(0)
+          })
+        }
+      })
       res.data.on('end', () => options.onComplete(filePath))
 
       res.data.pipe(createWriteStream(filePath))

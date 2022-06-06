@@ -107,10 +107,6 @@ export function isAppleCPU() {
   return os.cpus()[0].model.includes('Apple')
 }
 
-export function calcPercent(rate: number, total: number) {
-  return Math.floor(Math.min(Math.max(rate / total, 0), 1) * 100).toFixed(0)
-}
-
 function resolveGist(filePath: string) {
   return filePath.split('/')
 }
