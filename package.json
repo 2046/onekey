@@ -20,7 +20,8 @@
     "axios": "^0.27.2",
     "chalk": "4.1.2",
     "js-yaml": "^4.1.0",
-    "listr2": "^4.0.5"
+    "listr2": "^4.0.5",
+    "rimraf": "^3.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.1",
@@ -28,6 +29,7 @@
     "@tsconfig/node14": "^1.0.1",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^17.0.36",
+    "@types/rimraf": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "commitizen": "^4.2.4",
