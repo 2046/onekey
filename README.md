@@ -1,6 +1,6 @@
-# OneKey - one key install apps
+# OneKey - One key install apps & system settings
 
-Install the applications needed for a new system with one click, get the system into working condition quickly.
+Install the applications and system settings needed for a new system with one click, get the system into working condition quickly.
 
 ## Installation
 
