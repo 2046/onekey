@@ -50,11 +50,11 @@ export function isGistFile(filePath: string) {
 export function loadFile(filePath: string) {
   return new Promise<string>((resolve, reject) => {
     if (isLocallyFile(filePath)) {
-      readFile(filePath, 'utf8', (err, data) => (err ? reject(err) : resolve(data)))
+      readFile(filePath, 'utf8', (err, data) => (err ? reject(err) : resolve(data.trim())))
     } else if (isRemotelyFile(filePath)) {
       axios
         .get<string>(filePath)
-        .then(({ data }) => resolve(data))
+        .then(({ data }) => resolve(data.trim()))
         .catch((error) => reject(error))
     } else if (isGistFile(filePath)) {
       const [userName, gistName] = resolveGist(filePath)
