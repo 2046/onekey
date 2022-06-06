@@ -84,9 +84,8 @@ export function encrypt(data: string, password: string) {
   const iv = crypto.createHash('md5').update(password).digest()
   const key = crypto.createHash('sha256').update(password).digest()
   const cipher = crypto.createCipheriv(algorithm, key, iv)
-  const encryptedData = cipher.update(data, 'utf8', 'hex')
 
-  return `${encryptedData}${cipher.final('hex')}`
+  return `${cipher.update(data, 'utf8', 'hex')}${cipher.final('hex')}`
 }
 
 export function decrypt(data: string, password: string) {
@@ -94,9 +93,8 @@ export function decrypt(data: string, password: string) {
   const iv = crypto.createHash('md5').update(password).digest()
   const key = crypto.createHash('sha256').update(password).digest()
   const decipher = crypto.createDecipheriv(algorithm, key, iv)
-  const decryptedData = decipher.update(data, 'hex', 'utf8')
 
-  return `${decryptedData}${decipher.final('utf8')}`
+  return `${decipher.update(data, 'hex', 'utf8')}${decipher.final('utf8')}`
 }
 
 export async function tmpdir() {
