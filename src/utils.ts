@@ -11,6 +11,10 @@ export function isRootUser() {
   return !(process.platform === 'win32' || process.getuid())
 }
 
+export function isHashCode(text: string) {
+  return new RegExp(`^[a-f0-9]{${text.length}}$`, 'gi').test(text)
+}
+
 export function isPackFile(filePath: string) {
   return extname(filePath) === '.pack'
 }

@@ -4,7 +4,7 @@ import download from './download'
 import { exec } from 'child_process'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
 import { IPackOpition, IListrContext, ProgressEvent } from './types'
-import { isPackFile, decrypt, parse, loadFile, isAppType, isCommandType, isAppleCPU } from './utils'
+import { isPackFile, decrypt, parse, loadFile, isAppType, isCommandType, isAppleCPU, isHashCode } from './utils'
 
 export function getConfigTasks(filePath: string, password: string) {
   const fileName = basename(filePath)
@@ -30,12 +30,12 @@ export function getConfigTasks(filePath: string, password: string) {
     },
     {
       title: `Decrypt ${fileName} file`,
-      skip: () => !password,
+      skip: (ctx: IListrContext) => !isHashCode(ctx.text),
       task: (ctx: IListrContext) => {
         try {
           ctx.text = decrypt(ctx.text, password)
         } catch (error) {
-          throw new Error(chalk.red((<Error>error).message))
+          throw new Error(chalk.red('Incorrect password'))
         }
       }
     },
