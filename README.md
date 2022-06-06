@@ -1,4 +1,4 @@
-# OneKey - One key install apps & system settings
+# OneKey - one key install apps & system settings
 
 Install the applications and system settings needed for a new system with one click, get the system into working condition quickly.
 
@@ -8,14 +8,26 @@ Install the applications and system settings needed for a new system with one cl
 npm install -g onekey
 ```
 
+## Command line flags
+
+```bash
+sudo npx onekey [filePath] [password] [tools]
+```
+
+- **`filePath`**: configuration file address, support `local file` or `remote url` or `Github gist`.
+- **`password`**: secret key, if the configuration file is encrypted, it needs to be decrypted using the secret key.
+- **`tools`**: encrypt & decrypt tools, encrypt algorithm: `aes-256-cbc`.
+  - use `-e` to encrypt configuration files.
+  - use `-d` to decrypt configuration files.
+
 ## Usage
 
 ### Normal
 
 ```bash
-onekey <local file>.pack
-onekey <https:// url>.pack
-onekey <github username>/<gist name>.pack
+sudo onekey <local file>.pack
+sudo onekey <https:// url>.pack
+sudo onekey <github username>/<gist name>.pack
 ```
 
 ### Recommended
@@ -23,9 +35,33 @@ onekey <github username>/<gist name>.pack
 Use the `npx` command to omit the installation step.
 
 ```bash
-npx onekey <local file>.pack
-npx onekey <https:// url>.pack
-npx onekey <github username>/<gist name>.pack
+sudo npx onekey <local file>.pack
+sudo npx onekey <https:// url>.pack
+sudo npx onekey <github username>/<gist name>.pack
+```
+
+### Advanced
+
+Using an encrypted configuration file secures the data, but you must enter the correct secret key when using it.
+
+```bash
+sudo npx onekey <local file>.pack <password>
+sudo npx onekey <https:// url>.pack <password>
+sudo npx onekey <github username>/<gist name>.pack <password>
+```
+
+Use encrypt & decrypt tools
+
+```bash
+npx onekey <local file>.pack <password> -e # encrypt local file
+npx onekey <https:// url>.pack <password> -e # encrypt remote file
+npx onekey <github username>/<gist name>.pack <password> -e # encrypt gist file
+#==> hash code
+
+npx onekey <local file>.pack <password> -d # decrypt local file
+npx onekey <https:// url>.pack <password> -d # decrypt remote file
+npx onekey <github username>/<gist name>.pack <password> -d # decrypt gist file
+#==> yaml code
 ```
 
 ## Configuration file content
