@@ -1,17 +1,28 @@
 import chalk from 'chalk'
 import rimraf from 'rimraf'
+import tools from './tools'
 import { promisify } from 'util'
 import { IListrContext } from './types'
 import { tmpdir, isRootUser } from './utils'
 import { Listr, ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
 import { getConfigTasks, getInstallAppsTasks, getCommandTasks } from './tasks'
 
-const [filePath = '', password = ''] = process.argv.slice(2)
+const [filePath = '', password = '', op = ''] = process.argv.slice(2)
 
 ;(async function () {
+  if (filePath && password && op) {
+    if (op === '-e') {
+      await tools.encrypt(filePath, password)
+    } else if (op === '-d') {
+      await tools.decrypt(filePath, password)
+    }
+
+    return
+  }
+
   const tasks = [
     {
-      title: 'Checking User Permissions',
+      title: 'Check User Permissions',
       task: () => {
         if (!isRootUser()) {
           throw new Error(chalk.red('Please use sudo mode, later processes require advanced privileges'))
@@ -47,7 +58,7 @@ const [filePath = '', password = ''] = process.argv.slice(2)
       }
     },
     {
-      title: 'Cleaning Temporary Download Directory',
+      title: 'Clean Temporary Download Directory',
       task: async (ctx: IListrContext) => {
         try {
           if (ctx.tmpdir) {
