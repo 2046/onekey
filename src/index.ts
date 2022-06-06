@@ -1,8 +1,8 @@
 import chalk from 'chalk'
 import rimraf from 'rimraf'
-import { tmpdir } from './utils'
 import { promisify } from 'util'
 import { IListrContext } from './types'
+import { tmpdir, isRootUser } from './utils'
 import { Listr, ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
 import { getConfigTasks, getInstallAppsTasks, getCommandTasks } from './tasks'
 
@@ -10,6 +10,14 @@ const [filePath = '', password = ''] = process.argv.slice(2)
 
 ;(async function () {
   const tasks = [
+    {
+      title: 'Checking User Permissions',
+      task: () => {
+        if (!isRootUser()) {
+          throw new Error(chalk.red('Please use sudo mode, later processes require advanced privileges'))
+        }
+      }
+    },
     {
       title: 'Load Config File',
       task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {

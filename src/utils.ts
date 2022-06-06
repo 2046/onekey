@@ -7,6 +7,10 @@ import { mkdtemp } from 'fs/promises'
 import { lstatSync, readFile } from 'fs'
 import { IGist, IPackOpition } from './types'
 
+export function isRootUser() {
+  return !(process.platform === 'win32' || process.getuid())
+}
+
 export function isPackFile(filePath: string) {
   return extname(filePath) === '.pack'
 }
