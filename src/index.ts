@@ -3,7 +3,7 @@ import rimraf from 'rimraf'
 import tools from './tools'
 import { promisify } from 'util'
 import { IListrContext } from './types'
-import { tmpdir, isRootUser } from './utils'
+import { tmpdir, isRootUser, isAppType, isCommandType } from './utils'
 import { Listr, ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
 import { getConfigTasks, getInstallAppsTasks, getCommandTasks } from './tasks'
 
@@ -47,12 +47,14 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
     },
     {
       title: 'Install Apps',
+      skip: (ctx: IListrContext) => !ctx.tasks.filter((task) => isAppType(task))[0],
       task: (ctx: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
         return task.newListr(getInstallAppsTasks(ctx))
       }
     },
     {
       title: 'Change System Settings',
+      skip: (ctx: IListrContext) => !ctx.tasks.filter((task) => isCommandType(task))[0],
       task: (ctx: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
         return task.newListr(getCommandTasks(ctx))
       }
@@ -75,7 +77,7 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
     concurrent: false,
     exitOnError: true,
     registerSignalListeners: false,
-    rendererOptions: { collapse: false, collapseErrors: false }
+    rendererOptions: { collapse: true, collapseErrors: false }
   })
 
   try {

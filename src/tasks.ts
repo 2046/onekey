@@ -43,7 +43,7 @@ export function getConfigTasks(filePath: string, password: string) {
       title: `Parsing ${fileName} file`,
       task: (ctx: IListrContext) => {
         try {
-          ctx.tasks = parse<Array<IPackOpition>>(ctx.text)
+          ctx.tasks = parse<Array<IPackOpition>>(ctx.text) || []
         } catch (error) {
           throw new Error(chalk.red((<Error>error).message))
         }
