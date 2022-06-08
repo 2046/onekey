@@ -11,7 +11,7 @@ npm install -g onekey
 ## Command line flags
 
 ```bash
-sudo npx onekey [filePath] [password] [tools]
+npx onekey [filePath] [password] [tools]
 ```
 
 - **`filePath`**: configuration file address, support `local file` or `remote url` or `Github gist`.
@@ -25,9 +25,9 @@ sudo npx onekey [filePath] [password] [tools]
 ### Normal
 
 ```bash
-sudo onekey <local file>.pack
-sudo onekey <https:// url>.pack
-sudo onekey <github username>/<gist name>.pack
+onekey <local file>.pack
+onekey <https:// url>.pack
+onekey <github username>/<gist name>.pack
 ```
 
 ### Recommended
@@ -35,9 +35,9 @@ sudo onekey <github username>/<gist name>.pack
 Use the `npx` command to omit the installation step.
 
 ```bash
-sudo npx onekey <local file>.pack
-sudo npx onekey <https:// url>.pack
-sudo npx onekey <github username>/<gist name>.pack
+npx onekey <local file>.pack
+npx onekey <https:// url>.pack
+npx onekey <github username>/<gist name>.pack
 ```
 
 ### Advanced
@@ -45,9 +45,9 @@ sudo npx onekey <github username>/<gist name>.pack
 Using an encrypted configuration file secures the data, but you must enter the correct secret key when using it.
 
 ```bash
-sudo npx onekey <local file>.pack <password>
-sudo npx onekey <https:// url>.pack <password>
-sudo npx onekey <github username>/<gist name>.pack <password>
+npx onekey <local file>.pack <password>
+npx onekey <https:// url>.pack <password>
+npx onekey <github username>/<gist name>.pack <password>
 ```
 
 Use encrypt & decrypt tools
