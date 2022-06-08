@@ -7,8 +7,11 @@ import { mkdtemp } from 'fs/promises'
 import { lstatSync, readFile } from 'fs'
 import { IGist, IPackOpition } from './types'
 
+export const isMac = process.platform === 'darwin'
+export const isWindows = process.platform === 'win32'
+
 export function isRootUser() {
-  return !(process.platform === 'win32' || process.getuid())
+  return !(isWindows || process.getuid())
 }
 
 export function isHashCode(text: string) {
@@ -99,6 +102,14 @@ export function decrypt(data: string, password: string) {
 
 export async function tmpdir() {
   return await mkdtemp(join(os.tmpdir(), 'download'))
+}
+
+export function appdir() {
+  if (isMac) {
+    return '/Applications'
+  } else {
+    return ''
+  }
 }
 
 export function isAppType(obj: IPackOpition) {

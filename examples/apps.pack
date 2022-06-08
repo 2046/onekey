@@ -1,4 +1,9 @@
 - type: app
+  name: AppCleaner
+  downloadUrl: 'https://freemacsoft.net/downloads/AppCleaner_3.6.4.zip'
+  action:
+    - install
+- type: app
   name: MacZip
   downloadUrl: 'https://cdn.awehunt.com/ezip/release/MacZip_V2.3.dmg'
   action:

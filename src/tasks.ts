@@ -1,5 +1,6 @@
 import chalk from 'chalk'
 import shelljs from 'shelljs'
+import install from './install'
 import { basename } from 'path'
 import download from './download'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
@@ -62,7 +63,7 @@ export function getInstallAppsTasks(ctx: IListrContext) {
       return {
         title,
         task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-          return task.newListr([
+          let actions = [
             {
               title: 'Downloading',
               task: async (ctx: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
@@ -77,14 +78,29 @@ export function getInstallAppsTasks(ctx: IListrContext) {
                   throw new Error(chalk.red((<Error>error).message))
                 }
               }
-            },
-            {
-              title: 'Installing',
-              task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-                task.title = `Installed dir: ${<string>ctx.filePaths.get(title)}`
-              }
             }
-          ])
+          ]
+
+          if (app.action && app.action.includes('install')) {
+            actions = [
+              ...actions,
+              {
+                title: 'Installing',
+                task: async (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+                  try {
+                    const filePath = await install(<string>ctx.filePaths.get(title))
+
+                    task.title = 'Installed'
+                    ctx.filePaths.set(title, filePath)
+                  } catch (error) {
+                    throw new Error(chalk.red((<Error>error).message))
+                  }
+                }
+              }
+            ]
+          }
+
+          return task.newListr(actions)
         }
       }
     })
