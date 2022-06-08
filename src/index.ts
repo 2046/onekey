@@ -3,7 +3,7 @@ import rimraf from 'rimraf'
 import tools from './tools'
 import { promisify } from 'util'
 import { IListrContext } from './types'
-import { tmpdir, isRootUser, isAppType, isCommandType } from './utils'
+import { tmpdir, isAppType, isCommandType } from './utils'
 import { Listr, ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
 import { getConfigTasks, getInstallAppsTasks, getCommandTasks } from './tasks'
 
@@ -53,7 +53,7 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
       }
     },
     {
-      title: 'Change System Settings',
+      title: 'Change Default Settings',
       skip: (ctx: IListrContext) => !ctx.tasks.filter((task) => isCommandType(task))[0],
       task: (ctx: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
         return task.newListr(getCommandTasks(ctx))

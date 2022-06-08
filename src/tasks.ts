@@ -1,7 +1,7 @@
 import chalk from 'chalk'
+import shelljs from 'shelljs'
 import { basename } from 'path'
 import download from './download'
-import { exec } from 'child_process'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
 import { IPackOpition, IListrContext, ProgressEvent } from './types'
 import { isPackFile, decrypt, parse, loadFile, isAppType, isCommandType, isAppleCPU, isHashCode } from './utils'
@@ -99,10 +99,10 @@ export function getCommandTasks(ctx: IListrContext) {
 
       return {
         title,
-        task: async () => {
+        task: () => {
           try {
             for (const cmd of cmds) {
-              await execCommand(cmd)
+              shelljs.exec(cmd)
             }
           } catch (error) {
             throw new Error(chalk.red((<Error>error).message))
@@ -121,12 +121,6 @@ function execDownload(url: string, dir: string, onProgress: (progressEvent: Prog
       onError: (error) => reject(error),
       onComplete: (filePath) => resolve(filePath)
     })
-  })
-}
-
-function execCommand(command: string) {
-  return new Promise((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => (error ? reject(error) : resolve({ stdout, stderr })))
   })
 }
 
