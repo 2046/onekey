@@ -26,7 +26,8 @@
     "listr2": "^4.0.5",
     "plist": "^3.0.5",
     "rimraf": "^3.0.2",
-    "shelljs": "^0.8.5"
+    "shelljs": "^0.8.5",
+    "sudo-prompt": "^9.2.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.1",

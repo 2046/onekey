@@ -1,4 +1,5 @@
 import shelljs from 'shelljs'
+import sudo from 'sudo-prompt'
 import { IPlist } from './types'
 import { parsePlist } from './utils'
 
@@ -9,7 +10,24 @@ export default {
     return <Array<string>>parsePlist(stdout.trim())
   },
   installer(pathToPackage: string, mountPoint: string) {
-    shelljs.exec(`sudo installer -pkg ${convertSpaces(pathToPackage)} -target ${mountPoint}`, { silent: true })
+    return new Promise<{
+      stdout: string | Buffer | undefined
+      stderr: string | Buffer | undefined
+    }>((resolve, reject) => {
+      sudo.exec(
+        `installer -pkg ${convertSpaces(pathToPackage)} -target ${mountPoint}`,
+        {
+          name: 'OneKey'
+        },
+        (error, stdout, stderr) => {
+          if (error) {
+            return reject(error)
+          }
+
+          resolve({ stdout, stderr })
+        }
+      )
+    })
   },
   pkgInfo(pkgid: string) {
     const { stdout } = shelljs.exec(`pkgutil --pkg-info-plist ${pkgid}`, { silent: true })

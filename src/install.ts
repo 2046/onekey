@@ -14,6 +14,8 @@ export default async function install(filePath: string) {
     return await unzip(filePath, appdir())
   } else if (extName === '.dmg') {
     return await undmg(filePath, appdir())
+  } else if (extName === '.pkg') {
+    return await unpkg(filePath, appdir())
   } else {
     return ''
   }
@@ -57,7 +59,7 @@ async function undmg(filePath: string, dest: string) {
       destPath = join(dest, file)
       shelljs.cp('-R', sourcePath, destPath)
     } else if (extName === '.pkg') {
-      destPath = unpkg(sourcePath, dest)
+      destPath = await unpkg(sourcePath, dest)
     }
   }
 
@@ -66,10 +68,10 @@ async function undmg(filePath: string, dest: string) {
   return destPath
 }
 
-function unpkg(filePath: string, dest: string) {
+async function unpkg(filePath: string, dest: string) {
   const snapshot = pkgutil.pkgs()
 
-  pkgutil.installer(filePath, dest)
+  await pkgutil.installer(filePath, dest)
 
   return getCurrentPkgs(snapshot, pkgutil.pkgs(), dest.replace('/', ''))
 }
