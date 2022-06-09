@@ -36,7 +36,7 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
       }
     },
     {
-      title: 'Generate Temporary Download Directory',
+      title: 'Create Temporary Download Directory',
       task: async (ctx: IListrContext) => {
         try {
           ctx.tmpdir = await tmpdir()
@@ -60,7 +60,7 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
       }
     },
     {
-      title: 'Clean Temporary Download Directory',
+      title: 'Remove Temporary Download Directory',
       task: async (ctx: IListrContext) => {
         try {
           if (ctx.tmpdir) {
