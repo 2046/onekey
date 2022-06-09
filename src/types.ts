@@ -42,3 +42,12 @@ export type IListrContext = {
   tasks: Array<IPackOpition>
   filePaths: Map<string, string>
 }
+
+export type IPlist = {
+  pkgid: string
+  volume: string
+  'pkg-version': string
+  'install-time': number
+  'install-location': string
+  'receipt-plist-version': number
+}

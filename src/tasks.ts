@@ -5,7 +5,7 @@ import { basename } from 'path'
 import download from './download'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
 import { IPackOpition, IListrContext, ProgressEvent } from './types'
-import { isPackFile, decrypt, parse, loadFile, isAppType, isCommandType, isAppleCPU, isHashCode } from './utils'
+import { isPackFile, decrypt, parseYaml, loadFile, isAppType, isCommandType, isAppleCPU, isHashCode } from './utils'
 
 export function getConfigTasks(filePath: string, password: string) {
   const fileName = basename(filePath)
@@ -44,7 +44,7 @@ export function getConfigTasks(filePath: string, password: string) {
       title: `Parsing ${fileName} file`,
       task: (ctx: IListrContext) => {
         try {
-          ctx.tasks = parse<Array<IPackOpition>>(ctx.text) || []
+          ctx.tasks = parseYaml<Array<IPackOpition>>(ctx.text) || []
         } catch (error) {
           throw new Error(chalk.red((<Error>error).message))
         }

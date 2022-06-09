@@ -1,4 +1,5 @@
 import os from 'os'
+import plist from 'plist'
 import axios from 'axios'
 import yaml from 'js-yaml'
 import crypto from 'crypto'
@@ -74,8 +75,12 @@ export function loadFile(filePath: string) {
   })
 }
 
-export function parse<T = never>(text: string): T {
+export function parseYaml<T = never>(text: string): T {
   return (text ? yaml.load(text) : {}) as T
+}
+
+export function parsePlist(xml: string) {
+  return plist.parse(xml)
 }
 
 export function toInt(text: string) {
