@@ -1,20 +1,25 @@
 import AdmZip from 'adm-zip'
+import shelljs from 'shelljs'
+import pkgutil from './pkgutil'
 import decompress from 'decompress'
-import { extname, join } from 'path'
+import { readdir } from 'fs/promises'
 import { appdir, isMac } from './utils'
+import { Mounter } from '@shockpkg/hdi-mac'
+import { extname, join, basename } from 'path'
 
 export default async function install(filePath: string) {
   const extName = extname(filePath)
 
   if (extName === '.zip') {
     return await unzip(filePath, appdir())
+  } else if (extName === '.dmg') {
+    return await undmg(filePath, appdir())
   } else {
     return ''
   }
 }
 
 async function unzip(filePath: string, dest: string) {
-  let fileName = ''
   const zip = new AdmZip(filePath)
 
   if (isMac) {
@@ -24,16 +29,75 @@ async function unzip(filePath: string, dest: string) {
       try {
         await decompress(filePath, dest)
       } catch (error) {
-        if ((<NodeJS.ErrnoException>error).code === 'EEXIST') {
-          throw new Error('file already exists')
-        } else {
-          throw error
-        }
+        throw (<NodeJS.ErrnoException>error).code === 'EEXIST' ? new Error('file already exists') : error
       }
 
-      fileName = entry.entryName.replace('/', '')
+      return join(dest, entry.entryName.replace('/', ''))
     }
   }
 
-  return fileName ? join(dest, fileName) : ''
+  return ''
+}
+
+async function undmg(filePath: string, dest: string) {
+  let destPath = ''
+  const mounter = new Mounter()
+  const diskImage = await mounter.attach(filePath, { nobrowse: true })
+  const { mountPoint } = diskImage.devices.find((device) => device.mountPoint) || {}
+
+  if (!mountPoint) {
+    throw new Error('The mountPoint not found')
+  }
+
+  for (const file of await getMatchFiles(mountPoint)) {
+    const extName = extname(file)
+    const sourcePath = join(mountPoint, file)
+
+    if (extName === '.app') {
+      destPath = join(dest, file)
+      shelljs.cp('-R', sourcePath, destPath)
+    } else if (extName === '.pkg') {
+      destPath = unpkg(sourcePath, dest)
+    }
+  }
+
+  await diskImage.eject()
+
+  return destPath
+}
+
+function unpkg(filePath: string, dest: string) {
+  const snapshot = pkgutil.pkgs()
+
+  pkgutil.installer(filePath, dest)
+
+  return getCurrentPkgs(snapshot, pkgutil.pkgs(), dest.replace('/', ''))
+}
+
+function isApp(file: string) {
+  return /\.app?$/.test(file)
+}
+
+function isPkg(file: string) {
+  return /\.pkg?$/.test(file)
+}
+
+function getCurrentPkgs(previousValue: Array<string>, currentValue: Array<string>, dest: string) {
+  const pkgIds = currentValue.filter((value) => !previousValue.includes(value))
+  const pkgInfos = pkgIds.map((pkgid) => pkgutil.pkgInfo(pkgid))
+
+  if (pkgInfos.map((info) => info['install-location']).includes(dest)) {
+    const pkgInfo = pkgInfos.find((info) => info['install-location'] === dest)
+    const pkgFiles = pkgInfo ? pkgutil.files(pkgInfo.pkgid) : []
+
+    return pkgFiles.filter((fileName) => /^[^/]+$/.test(fileName))[0]
+  } else {
+    return join('/usr/local/bin', pkgInfos.map((info) => basename(pkgutil.files(info.pkgid)[0]))[0])
+  }
+}
+
+async function getMatchFiles(mountPoint: string) {
+  const files = await readdir(mountPoint)
+
+  return files.filter((file) => isApp(file) || isPkg(file))
 }
