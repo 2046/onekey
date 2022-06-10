@@ -5,7 +5,18 @@ import { basename } from 'path'
 import download from './download'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
 import { IPackOpition, IListrContext, ProgressEvent } from './types'
-import { isPackFile, decrypt, parseYaml, loadFile, isAppType, isCommandType, isAppleCPU, isHashCode } from './utils'
+import {
+  appdir,
+  decrypt,
+  parseYaml,
+  loadFile,
+  isAppType,
+  isPackFile,
+  isAppleCPU,
+  isHashCode,
+  isInstalled,
+  isCommandType
+} from './utils'
 
 export function getConfigTasks(filePath: string, password: string) {
   const fileName = basename(filePath)
@@ -67,6 +78,10 @@ export function getInstallAppsTasks(ctx: IListrContext) {
             {
               title: 'Downloading',
               task: async (ctx: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+                if (await isInstalled(title, appdir())) {
+                  return true
+                }
+
                 try {
                   const filePath = await execDownload(url, ctx.tmpdir, ({ percent }) => {
                     task.title = `Downloading [${percent}%]`
@@ -87,6 +102,10 @@ export function getInstallAppsTasks(ctx: IListrContext) {
               {
                 title: 'Installing',
                 task: async (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+                  if (await isInstalled(title, appdir())) {
+                    return true
+                  }
+
                   try {
                     const filePath = await install(<string>ctx.filePaths.get(title))
 

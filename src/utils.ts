@@ -3,6 +3,8 @@ import plist from 'plist'
 import axios from 'axios'
 import yaml from 'js-yaml'
 import crypto from 'crypto'
+import shelljs from 'shelljs'
+import { lstat } from 'fs/promises'
 import { extname, join } from 'path'
 import { mkdtemp } from 'fs/promises'
 import { lstatSync, readFile } from 'fs'
@@ -17,6 +19,17 @@ export function isHashCode(text: string) {
 
 export function isPackFile(filePath: string) {
   return extname(filePath) === '.pack'
+}
+
+export async function isInstalled(appName: string, dest: string) {
+  if (isMac) {
+    try {
+      return (await lstat(join(dest, `${appName}.app`))).isDirectory()
+    } catch (error) {
+      const { stdout } = shelljs.which(appName.toLowerCase()) || {}
+      return !!stdout
+    }
+  }
 }
 
 export function isLocallyFile(filePath: string) {
