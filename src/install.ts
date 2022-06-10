@@ -88,6 +88,10 @@ function getCurrentPkgs(previousValue: Array<string>, currentValue: Array<string
   const pkgIds = currentValue.filter((value) => !previousValue.includes(value))
   const pkgInfos = pkgIds.map((pkgid) => pkgutil.pkgInfo(pkgid))
 
+  if (pkgIds.length === 0) {
+    throw new Error('file already exists')
+  }
+
   if (pkgInfos.map((info) => info['install-location']).includes(dest)) {
     const pkgInfo = pkgInfos.find((info) => info['install-location'] === dest)
     const pkgFiles = pkgInfo ? pkgutil.files(pkgInfo.pkgid) : []
