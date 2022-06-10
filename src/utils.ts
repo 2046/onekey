@@ -11,10 +11,6 @@ import { IGist, IPackOpition } from './types'
 export const isMac = process.platform === 'darwin'
 export const isWindows = process.platform === 'win32'
 
-export function isRootUser() {
-  return !(isWindows || process.getuid())
-}
-
 export function isHashCode(text: string) {
   return new RegExp(`^[a-f0-9]{${text.length}}$`, 'gi').test(text)
 }

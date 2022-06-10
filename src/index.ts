@@ -21,14 +21,6 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
   }
 
   const tasks = [
-    // {
-    //   title: 'Check User Permissions',
-    //   task: () => {
-    //     if (!isRootUser()) {
-    //       throw new Error(chalk.red('Please use sudo mode, later processes require advanced privileges'))
-    //     }
-    //   }
-    // },
     {
       title: 'Load Config File',
       task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
