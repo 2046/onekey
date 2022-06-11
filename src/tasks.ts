@@ -1,3 +1,4 @@
+import mas from './mas'
 import chalk from 'chalk'
 import shelljs from 'shelljs'
 import install from './install'
@@ -6,16 +7,20 @@ import download from './download'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
 import { IPackOpition, IListrContext, ProgressEvent } from './types'
 import {
+  isMac,
   appdir,
   decrypt,
   parseYaml,
   loadFile,
   isAppType,
+  hasMasApp,
   isPackFile,
   isAppleCPU,
   isHashCode,
   isInstalled,
-  isCommandType
+  isCommandType,
+  isAppStoreUrl,
+  parseAppStoreUrl
 } from './utils'
 
 export function getConfigTasks(filePath: string, password: string) {
@@ -56,6 +61,12 @@ export function getConfigTasks(filePath: string, password: string) {
       task: (ctx: IListrContext) => {
         try {
           ctx.tasks = parseYaml<Array<IPackOpition>>(ctx.text) || []
+
+          if (isMac && ctx.tasks.filter((task) => hasMasApp(task)) && !mas.isLogined()) {
+            throw new Error(
+              chalk.red('To download apps from the Mac App Store, you need to login to your Apple ID manually.')
+            )
+          }
         } catch (error) {
           throw new Error(chalk.red((<Error>error).message))
         }
@@ -82,15 +93,28 @@ export function getInstallAppsTasks(ctx: IListrContext) {
                   return true
                 }
 
-                try {
-                  const filePath = await execDownload(url, ctx.tmpdir, ({ percent }) => {
-                    task.title = `Downloading [${percent}%]`
-                  })
+                if (isMac && isAppStoreUrl(url)) {
+                  if (!mas.isInstalled()) {
+                    try {
+                      await mas.install()
+                    } catch (error) {
+                      throw new Error(chalk.red((<Error>error).message))
+                    }
+                  }
 
                   task.title = 'Downloaded'
-                  ctx.filePaths.set(title, filePath)
-                } catch (error) {
-                  throw new Error(chalk.red((<Error>error).message))
+                  ctx.filePaths.set(title, parseAppStoreUrl(url))
+                } else {
+                  try {
+                    const filePath = await execDownload(url, ctx.tmpdir, ({ percent }) => {
+                      task.title = `Downloading [${percent}%]`
+                    })
+
+                    task.title = 'Downloaded'
+                    ctx.filePaths.set(title, filePath)
+                  } catch (error) {
+                    throw new Error(chalk.red((<Error>error).message))
+                  }
                 }
               }
             }

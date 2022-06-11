@@ -1,3 +1,4 @@
+import mas from './mas'
 import AdmZip from 'adm-zip'
 import shelljs from 'shelljs'
 import pkgutil from './pkgutil'
@@ -16,6 +17,8 @@ export default async function install(filePath: string) {
     return await undmg(filePath, appdir())
   } else if (extName === '.pkg') {
     return await unpkg(filePath, appdir())
+  } else if (extName === '' && /^\d+$/.test(filePath)) {
+    return installMasApp(filePath, appdir())
   } else {
     return ''
   }
@@ -76,6 +79,12 @@ async function unpkg(filePath: string, dest: string) {
   return getCurrentPkgs(snapshot, pkgutil.pkgs(), dest.replace('/', ''))
 }
 
+function installMasApp(appid: string, dest: string) {
+  const appName = mas.installApp(appid)
+
+  return join(dest, appName, '.app')
+}
+
 function isApp(file: string) {
   return /\.app?$/.test(file)
 }
@@ -96,7 +105,7 @@ function getCurrentPkgs(previousValue: Array<string>, currentValue: Array<string
     const pkgInfo = pkgInfos.find((info) => info['install-location'] === dest)
     const pkgFiles = pkgInfo ? pkgutil.files(pkgInfo.pkgid) : []
 
-    return pkgFiles.filter((fileName) => /^[^/]+$/.test(fileName))[0]
+    return join(dest, pkgFiles.filter((fileName) => /^[^/]+$/.test(fileName))[0])
   } else {
     return join('/usr/local/bin', pkgInfos.map((info) => basename(pkgutil.files(info.pkgid)[0]))[0])
   }

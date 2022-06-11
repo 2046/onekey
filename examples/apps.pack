@@ -9,6 +9,11 @@
   action:
     - install
 - type: app
+  name: ColorSlurp
+  downloadUrl: 'https://apps.apple.com/cn/app/id1287239339'
+  action:
+    - install
+- type: app
   name: Git
   downloadUrl: 'https://udomain.dl.sourceforge.net/project/git-osx-installer/git-2.33.0-intel-universal-mavericks.dmg'
   action:

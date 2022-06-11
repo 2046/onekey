@@ -5,10 +5,10 @@ import yaml from 'js-yaml'
 import crypto from 'crypto'
 import shelljs from 'shelljs'
 import { lstat } from 'fs/promises'
-import { extname, join } from 'path'
 import { mkdtemp } from 'fs/promises'
 import { lstatSync, readFile } from 'fs'
 import { IGist, IPackOpition } from './types'
+import { extname, join, basename } from 'path'
 
 export const isMac = process.platform === 'darwin'
 export const isWindows = process.platform === 'win32'
@@ -92,6 +92,10 @@ export function parsePlist(xml: string) {
   return plist.parse(xml)
 }
 
+export function parseAppStoreUrl(url: string) {
+  return basename(new URL(url).pathname).replace('id', '')
+}
+
 export function toInt(text: string) {
   return text ? parseInt(text, 10) : 0
 }
@@ -136,6 +140,14 @@ export function isCommandType(obj: IPackOpition) {
 
 export function isAppleCPU() {
   return os.cpus()[0].model.includes('Apple')
+}
+
+export function isAppStoreUrl(url: string) {
+  return new URL(url).hostname === 'apps.apple.com'
+}
+
+export function hasMasApp(obj: IPackOpition) {
+  return isAppType(obj) && !Array.isArray(obj.downloadUrl) && isAppStoreUrl(obj.downloadUrl)
 }
 
 function resolveGist(filePath: string) {
