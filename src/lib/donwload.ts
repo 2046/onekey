@@ -9,11 +9,7 @@ export type ProgressEvent = {
   percent: string
 }
 
-export default function download(options: {
-  url: string
-  dir: string
-  onProgress?: (progressEvent: ProgressEvent) => void
-}) {
+export default function download(options: { url: string; dir: string; onProgress?: (progressEvent: ProgressEvent) => void }) {
   return new Promise<string>((resolve, reject) => {
     const fileName = basename(options.url)
 

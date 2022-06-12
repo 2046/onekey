@@ -1,9 +1,5 @@
-import chalk from 'chalk'
-import rimraf from 'rimraf'
 import crypto from './crypto'
 import { Listr } from 'listr2'
-import { tmpdir } from '../lib'
-import { promisify } from 'util'
 import * as tasks from './tasks'
 import { IListrContext } from './typing'
 import { isAppType, isCommandType } from './utils'
@@ -11,14 +7,10 @@ import { isAppType, isCommandType } from './utils'
 const [filePath = '', password = '', op = ''] = process.argv.slice(2)
 
 ;(async function main() {
-  if (filePath && password && op) {
-    if (op === '-e') {
-      await crypto.encrypt(filePath, password)
-    } else if (op === '-d') {
-      await crypto.decrypt(filePath, password)
-    }
-
-    return
+  if (filePath && password && op === '-e') {
+    return await crypto.encrypt(filePath, password)
+  } else if (filePath && password && op === '-d') {
+    return await crypto.decrypt(filePath, password)
   }
 
   const listr = new Listr<IListrContext>(
@@ -36,46 +28,28 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
       },
       {
         title: 'Create Temporary Download Directory',
-        task: async (ctx) => {
-          try {
-            ctx.tmpdir = await tmpdir()
-          } catch (error) {
-            throw new Error(chalk.red((<Error>error).message))
-          }
-        }
+        task: tasks.createGenerateTmpDirectoryTask()
       },
       {
         title: 'Install Apps',
         skip: (ctx) => !ctx.tasks.filter((task) => isAppType(task))[0],
-        task: (ctx, task) => {
-          return task.newListr(tasks.createInstallAppTasks(ctx))
-        }
+        task: (ctx, task) => task.newListr(tasks.createInstallAppTasks(ctx))
       },
       {
         title: 'Change Default Settings',
         skip: (ctx) => !ctx.tasks.filter((task) => isCommandType(task))[0],
-        task: (ctx, task) => {
-          return task.newListr(tasks.createExecCommandTasks(ctx))
-        }
+        task: (ctx, task) => task.newListr(tasks.createExecCommandTasks(ctx))
       },
       {
         title: 'Remove Temporary Download Directory',
-        task: async (ctx: IListrContext) => {
-          try {
-            if (ctx.tmpdir) {
-              await promisify(rimraf)(ctx.tmpdir)
-            }
-          } catch (error) {
-            throw new Error(chalk.red((<Error>error).message))
-          }
-        }
+        task: tasks.createRemoveTmpDirectoryTask()
       }
     ],
     {
       concurrent: false,
       exitOnError: true,
       registerSignalListeners: false,
-      rendererOptions: { collapse: false, collapseErrors: false }
+      rendererOptions: { collapse: true, collapseErrors: false }
     }
   )
 

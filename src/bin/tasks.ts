@@ -1,19 +1,11 @@
 import chalk from 'chalk'
+import rimraf from 'rimraf'
 import { basename } from 'path'
+import { promisify } from 'util'
 import { IListrContext, IPackOpition } from './typing'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
-import { download, install, exec, isAppleCPU, isMac } from '../lib'
-import {
-  parse,
-  decrypt,
-  loadFile,
-  isMasUrl,
-  isAppType,
-  isHashCode,
-  isPackFile,
-  isCommandType,
-  resolveMasUrl
-} from './utils'
+import { download, install, exec, isAppleCPU, isMac, tmpdir } from '../lib'
+import { parse, decrypt, loadFile, isMasUrl, isAppType, isHashCode, isPackFile, isCommandType, resolveMasUrl } from './utils'
 
 export function createFileFormatVerifyTask(filePath: string) {
   return {
@@ -111,6 +103,28 @@ export function createExecCommandTasks(ctx: IListrContext) {
         }
       }
     })
+}
+
+export function createGenerateTmpDirectoryTask() {
+  return async (ctx: IListrContext) => {
+    try {
+      ctx.tmpdir = await tmpdir()
+    } catch (error) {
+      throw new Error(chalk.red((<Error>error).message))
+    }
+  }
+}
+
+export function createRemoveTmpDirectoryTask() {
+  return async (ctx: IListrContext) => {
+    try {
+      if (ctx.tmpdir) {
+        await promisify(rimraf)(ctx.tmpdir)
+      }
+    } catch (error) {
+      throw new Error(chalk.red((<Error>error).message))
+    }
+  }
 }
 
 function createDownloadTask(app: IPackOpition) {
