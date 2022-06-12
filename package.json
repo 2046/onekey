@@ -130,7 +130,8 @@
         {
           "ignoreIIFE": true
         }
-      ]
+      ],
+      "@typescript-eslint/ban-ts-comment": "off"
     },
     "env": {
       "node": true
