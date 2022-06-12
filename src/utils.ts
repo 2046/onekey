@@ -41,23 +41,15 @@ export function isLocallyFile(filePath: string) {
 }
 
 export function isRemotelyFile(filePath: string) {
-  const pattern = new RegExp(
-    '^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$',
-    'i'
-  ) // fragment locator
-
-  return !!pattern.test(filePath)
+  try {
+    return ['http:', 'https:'].includes(new URL(filePath).protocol)
+  } catch (error) {
+    return false
+  }
 }
 
 export function isGistFile(filePath: string) {
-  const names = resolveGist(filePath)
-
-  return !!(names.length === 2 && names[0] && names[1])
+  return /^[a-z0-9]+\/[a-z0-9]+$/gi.test(filePath)
 }
 
 export function loadFile(filePath: string) {
@@ -70,7 +62,7 @@ export function loadFile(filePath: string) {
         .then(({ data }) => resolve(data.trim()))
         .catch((error) => reject(error))
     } else if (isGistFile(filePath)) {
-      const [userName, gistName] = resolveGist(filePath)
+      const [userName, gistName] = filePath.split('/')
       const url = `https://api.github.com/users/${userName}/gists`
 
       axios
@@ -148,10 +140,6 @@ export function isAppStoreUrl(url: string) {
 
 export function hasMasApp(obj: IPackOpition) {
   return isAppType(obj) && !Array.isArray(obj.downloadUrl) && isAppStoreUrl(obj.downloadUrl)
-}
-
-function resolveGist(filePath: string) {
-  return filePath.split('/')
 }
 
 function getGistRawUrl(gists: Array<IGist>, name: string) {
