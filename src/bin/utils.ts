@@ -6,7 +6,11 @@ import { lstatSync, readFile } from 'fs'
 import { IGist, IPackOpition } from './typing'
 
 export function parse<T = never>(text: string): T {
-  return (text ? yaml.load(text) : {}) as T
+  try {
+    return (text ? yaml.load(text) : {}) as T
+  } catch (error) {
+    return {} as T
+  }
 }
 
 export function isPackFile(filePath: string) {
@@ -22,7 +26,11 @@ export function isCommandType(obj: IPackOpition) {
 }
 
 export function isMasUrl(url: string) {
-  return new URL(url).hostname === 'apps.apple.com'
+  try {
+    return new URL(url).hostname === 'apps.apple.com'
+  } catch (error) {
+    return false
+  }
 }
 
 export function isHashCode(text: string) {
@@ -74,7 +82,12 @@ export function loadFile(filePath: string) {
 }
 
 export function resolveMasUrl(url: string) {
-  return basename(new URL(url).pathname).replace('id', '')
+  try {
+    const str = basename(new URL(url).pathname)
+    return str.indexOf('id') === 0 ? str.replace('id', '') : ''
+  } catch (error) {
+    return ''
+  }
 }
 
 export function encrypt(data: string, password: string) {
