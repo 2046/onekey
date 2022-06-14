@@ -3,11 +3,11 @@ import * as pkgutil from './pkgutil'
 import { extname, join } from 'path'
 import { cp, exec, which } from './shell'
 import { mkdtemp, lstat } from 'fs/promises'
-import { isMac, MAS_PKG_URL, isAppleCPU } from './constants'
+import { MAS_PKG_URL, isAppleCPU } from './constants'
 
 export { pkgutil }
 export { cp, exec, which }
-export { isMac, MAS_PKG_URL, isAppleCPU }
+export { MAS_PKG_URL, isAppleCPU }
 
 export function toInt(text: string) {
   return text ? parseInt(text, 10) : 0
@@ -26,7 +26,7 @@ export function extName(filePath: string) {
 }
 
 export function appdir() {
-  return isMac ? '/Applications' : ''
+  return '/Applications'
 }
 
 export async function tmpdir() {
@@ -34,11 +34,9 @@ export async function tmpdir() {
 }
 
 export async function isInstalled(appName: string) {
-  if (isMac) {
-    try {
-      return (await lstat(join(appdir(), `${appName}.app`))).isDirectory()
-    } catch (error) {
-      return which(appName.toLowerCase())
-    }
+  try {
+    return (await lstat(join(appdir(), `${appName}.app`))).isDirectory()
+  } catch (error) {
+    return which(appName.toLowerCase())
   }
 }
