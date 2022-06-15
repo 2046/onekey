@@ -86,3 +86,9 @@ The contents of the configuration file use `YAML` syntax, and the file extension
 ## License
 
 [MIT](LICENSE).
+
+## References and ideas
+
+- https://github.com/labianchin/dotfiles
+- https://macos-defaults.com/
+- https://github.com/apptools-lab/AppToolkit
