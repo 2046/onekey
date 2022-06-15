@@ -106,4 +106,20 @@ describe('cli utils', () => {
     expect(utils.encrypt(data, password)).toBe(encryptData)
     expect(utils.decrypt(encryptData, password)).toBe(data)
   })
+
+  test('data duplication encrypt', () => {
+    expect(utils.encrypt('1b68b3120ff997a47f53666fa28b04cb', '123456')).toBe(
+      '41c16d2d132fa03e279d674ce374e94c9165a7f8fbdf9f1bea996ed0098a125f182d9dade0ebf68a131b71cd0e827b32'
+    )
+  })
+
+  test('data decrypt exception', () => {
+    expect(() => {
+      utils.decrypt('1b68b3120ff997a47f53666fa28b04cb', '12345')
+    }).toThrow()
+
+    expect(() => {
+      utils.decrypt('hello world', '12345')
+    }).toThrow()
+  })
 })
