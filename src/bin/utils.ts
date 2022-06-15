@@ -38,7 +38,7 @@ export function isHashCode(text: string) {
 }
 
 export function isGistFile(filePath: string) {
-  return /^[a-z0-9]+\/[a-z0-9]+$/gi.test(filePath)
+  return /^[a-z0-9.]+\/[a-z0-9.]+$/gi.test(filePath)
 }
 
 export function isLocallyFile(filePath: string) {

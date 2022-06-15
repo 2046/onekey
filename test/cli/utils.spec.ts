@@ -122,4 +122,42 @@ describe('cli utils', () => {
       utils.decrypt('hello world', '12345')
     }).toThrow()
   })
+
+  test('load file exception', async () => {
+    await expect(async () => {
+      await utils.loadFile(path.join(process.cwd(), '/test/fixtures/test.zip'))
+    }).rejects.toThrow(Error)
+  })
+
+  test('load local file', async () => {
+    const result = await utils.loadFile(path.join(process.cwd(), '/test/fixtures/test.pack'))
+
+    expect(result).not.toBeNull()
+  })
+
+  test('load remote file', async () => {
+    const result = await utils.loadFile(
+      'https://gist.githubusercontent.com/2046/09ff62cb185b98e19680621b6c31bc94/raw/6907ed1da6c44f55e098df69087ef42d6677c309/apps.pack'
+    )
+
+    expect(result).not.toBeNull()
+
+    await expect(async () => {
+      await utils.loadFile('https://example.com/apps.pack')
+    }).rejects.toThrow(Error)
+  })
+
+  test('load gist file', async () => {
+    const result = await utils.loadFile('2046/apps.pack')
+
+    expect(result).not.toBeNull()
+
+    await expect(async () => {
+      await utils.loadFile('1b68b3120ff997a47f53666fa28b04cb/apps.pack')
+    }).rejects.toThrow(Error)
+
+    await expect(async () => {
+      await utils.loadFile('2046/app.pack')
+    }).rejects.toThrow(Error)
+  })
 })
