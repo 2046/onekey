@@ -1,50 +1,49 @@
 - type: app
-  name: AppCleaner
-  downloadUrl: 'https://freemacsoft.net/downloads/AppCleaner_3.6.4.zip'
+  name: test
+  downloadUrl: 'https://example.com/downloads/test.zip'
   action:
     - install
 - type: app
-  name: MacZip
-  downloadUrl: 'https://cdn.awehunt.com/ezip/release/MacZip_V2.3.dmg'
+  name: test
+  downloadUrl: 'https://example.com/downloads/test.zip'
   action:
     - install
 - type: app
-  name: ColorSlurp
-  downloadUrl: 'https://apps.apple.com/cn/app/id1287239339'
+  name: test
+  downloadUrl: 'https://example.com/downloads/test.zip'
   action:
     - install
 - type: app
-  name: Git
-  downloadUrl: 'https://udomain.dl.sourceforge.net/project/git-osx-installer/git-2.33.0-intel-universal-mavericks.dmg'
+  name: test
+  downloadUrl: 'https://example.com/downloads/test.zip'
   action:
     - install
 - type: app
-  name: Google Chrome
+  name: test
   downloadUrl:
     - - intel
-      - 'https://dl.google.com/chrome/mac/universal/stable/GGRO/googlechrome.dmg'
+      - 'https://example.com/downloads/test.zip'
     - - arm
-      - 'https://dl.google.com/chrome/mac/universal/stable/CHFA/googlechrome.dmg'
+      - 'https://example.com/downloads/test.zip'
   action:
     - install
 - type: app
-  name: Notion
+  name: test
   downloadUrl:
     - - intel
-      - 'https://desktop-release.notion-static.com/Notion-2.0.22.dmg'
+      - 'https://example.com/downloads/test.zip'
     - - arm
-      - 'https://desktop-release.notion-static.com/Notion-2.0.21-arm64.dmg'
+      - 'https://example.com/downloads/test.zip'
   action:
     - install
 - type: command
-  description: Show all file extensions
-  cmd: defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true"
+  description: test
+  cmd: echo "test"
 - type: command
-  description: Show hidden files
-  cmd: defaults write com.apple.finder "AppleShowAllFiles" -bool "true"
+  description: test
+  cmd: echo "test"
 - type: command
-  description: Show path bar
-  cmd: defaults write com.apple.finder "ShowPathbar" -bool "true"
-- type: command
-  description: Reload finder settings
-  cmd: killall Finder
+  description: test
+  cmd:
+    - echo "test"
+    - echo "test"
