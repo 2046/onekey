@@ -136,9 +136,7 @@ describe('cli utils', () => {
   })
 
   test('load remote file', async () => {
-    const result = await utils.loadFile(
-      'https://gist.githubusercontent.com/2046/09ff62cb185b98e19680621b6c31bc94/raw/6907ed1da6c44f55e098df69087ef42d6677c309/apps.pack'
-    )
+    const result = await utils.loadFile('https://onekey-test.oss-cn-shanghai.aliyuncs.com/packs/test.pack')
 
     expect(result).not.toBeNull()
 
