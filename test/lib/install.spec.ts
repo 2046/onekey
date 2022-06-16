@@ -34,7 +34,9 @@ describe('install', () => {
       dir: await tmpdir()
     })
 
-    await install(result)
+    const filePath = await install(result)
+
+    expect((await lstat(filePath)).isDirectory()).toBeTruthy()
   }, 20000)
 
   test('install mas', async () => {
