@@ -85,19 +85,24 @@ describe('tasks', () => {
     await loadTaskObj.task(ctx)
     parseTaskObj.task(ctx)
 
-    void new Listr<IListrContext>([
-      {
-        title: 'install apps',
-        task: (_, task) => {
-          const result = tasks.createInstallAppTasks(ctx)
+    void new Listr<IListrContext>(
+      [
+        {
+          title: 'install apps',
+          task: (_, task) => {
+            const result = tasks.createInstallAppTasks(ctx)
 
-          expect(Array.isArray(result)).toBeTruthy()
-          expect(result[0].title).not.toBeNull()
+            expect(Array.isArray(result)).toBeTruthy()
+            expect(result[0].title).not.toBeNull()
 
-          expect(result[0].task(_, task).tasks.map((item) => item.title)).toEqual(['Downloading', 'Installing'])
+            expect(result[0].task(_, task).tasks.map((item) => item.title)).toEqual(['Downloading', 'Installing'])
+          }
         }
+      ],
+      {
+        rendererSilent: true
       }
-    ]).run()
+    ).run()
   })
 
   test('create exec command tasks', async () => {
@@ -128,6 +133,7 @@ describe('tasks', () => {
     expect(ctx.tmpdir).not.toBeNull()
     expect((await lstat(ctx.tmpdir)).isDirectory()).toBeTruthy()
   })
+
   test('create remove tmp directory task', async () => {
     const ctx = <IListrContext>{ tmpdir: '' }
     const generateTask = tasks.createGenerateTmpDirectoryTask()
