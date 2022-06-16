@@ -36,8 +36,10 @@ export default function download(options: { url: string; dir: string; onProgress
           })
         }
 
-        res.data.on('end', () => resolve(destPath))
-        res.data.pipe(createWriteStream(destPath))
+        res.data
+          .pipe(createWriteStream(destPath))
+          .on('close', () => resolve(destPath))
+          .on('error', (error) => reject(error))
       })
       .catch((error) => reject(error))
   })
