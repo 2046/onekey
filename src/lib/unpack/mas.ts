@@ -12,14 +12,20 @@ export default async function unmas(appid: string, dest: string) {
     await installMas()
   }
 
-  const { stdout } = exec(`mas install ${appid}`)
-  const appName = stdout ? stdout.replace('==> Installed', '') : ''
+  let appName = ''
+  const { stdout, stderr } = exec(`mas install ${appid}`)
 
-  return appName ? join(dest, appName, '.app') : ''
+  if (stderr) {
+    appName = stderr.replace('Warning: ', '').replace(' is already installed', '').trim()
+  } else if (stdout) {
+    appName = stdout.replace('==> Installed', '').trim()
+  }
+
+  return appName ? join(dest, `${appName}.app`) : ''
 }
 
 function isLogined() {
-  const { stdout } = exec("defaults read MobileMeAccounts | grep AccountID | cut -d '\"' -f 2")
+  const { stdout } = exec('defaults read MobileMeAccounts | grep AccountID | cut -d " -f2')
 
   return !!stdout
 }
