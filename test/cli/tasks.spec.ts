@@ -1,8 +1,8 @@
 import path from 'path'
+import { Listr } from 'listr2'
 import { lstat } from 'fs/promises'
 import * as tasks from '../../src/bin/tasks'
 import { IListrContext, IPackOpition } from '../../src/bin/typing'
-import { ListrTaskWrapper, ListrTaskObject, ListrRenderer, Listr } from 'listr2'
 
 const errorFilePath = path.join(process.cwd(), '/test/fixtures/test.zip')
 const originFilePath = path.join(process.cwd(), '/test/fixtures/test.pack')
