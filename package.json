@@ -2,9 +2,12 @@
   "name": "onekey",
   "version": "1.0.0",
   "description": "one key install apps",
-  "main": "dist/index.js",
+  "main": "./dist/lib/index.js",
   "engines": {
     "node": ">=14.0.0"
+  },
+  "bin": {
+    "onekey": "./dist/cli/main.js"
   },
   "repository": {
     "type": "git",
