@@ -1,6 +1,6 @@
 import path from 'path'
 import { readFile } from 'fs/promises'
-import crypto from '../../src/bin/crypto'
+import crypto from '../../src/cli/crypto'
 
 const originFilePath = path.join(process.cwd(), '/test/fixtures/test.pack')
 const cipherFilePath = path.join(process.cwd(), '/test/fixtures/crypto.pack')

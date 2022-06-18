@@ -1,5 +1,5 @@
 import path from 'path'
-import * as utils from '../../src/bin/utils'
+import * as utils from '../../src/cli/utils'
 
 describe('cli utils', () => {
   test('parse yaml content to object', () => {

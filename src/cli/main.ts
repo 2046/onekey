@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import crypto from './crypto'
 import { Listr } from 'listr2'
 import * as tasks from './tasks'
