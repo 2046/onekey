@@ -5,7 +5,7 @@ import { tmpdir } from '../../src/lib/utils'
 describe('donwload', () => {
   test('download file', async () => {
     const result = await download({
-      url: 'https://onekey-test.oss-cn-shanghai.aliyuncs.com/apps/AppCleaner_3.6.4.zip',
+      url: 'http://localhost:6688/downloads/AppCleaner_3.6.4.zip',
       dir: await tmpdir()
     })
 
@@ -16,7 +16,7 @@ describe('donwload', () => {
     const mockOnProgress = jest.fn()
 
     const result = await download({
-      url: 'https://onekey-test.oss-cn-shanghai.aliyuncs.com/apps/AppCleaner_3.6.4.zip',
+      url: 'http://localhost:6688/downloads/AppCleaner_3.6.4.zip',
       dir: await tmpdir(),
       onProgress: mockOnProgress
     })

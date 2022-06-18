@@ -136,7 +136,7 @@ describe('cli utils', () => {
   })
 
   test('load remote file', async () => {
-    const result = await utils.loadFile('https://onekey-test.oss-cn-shanghai.aliyuncs.com/packs/test.pack')
+    const result = await utils.loadFile('http://localhost:6688/packs/apps.pack')
 
     expect(result).not.toBeNull()
 

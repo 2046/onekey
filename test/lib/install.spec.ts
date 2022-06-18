@@ -8,7 +8,7 @@ describe('install', () => {
     exec(`rm -rf /${appdir()}/AppCleaner.app`)
 
     const result = await download({
-      url: 'https://onekey-test.oss-cn-shanghai.aliyuncs.com/apps/AppCleaner_3.6.4.zip',
+      url: 'http://localhost:6688/downloads/AppCleaner_3.6.4.zip',
       dir: await tmpdir()
     })
 
@@ -19,7 +19,7 @@ describe('install', () => {
 
   test('install zip exception', async () => {
     const result = await download({
-      url: 'https://onekey-test.oss-cn-shanghai.aliyuncs.com/apps/AppCleaner_3.6.4.zip',
+      url: 'http://localhost:6688/downloads/AppCleaner_3.6.4.zip',
       dir: await tmpdir()
     })
 
@@ -30,7 +30,7 @@ describe('install', () => {
 
   test('install dmg', async () => {
     const result = await download({
-      url: 'https://onekey-test.oss-cn-shanghai.aliyuncs.com/apps/MacZip_V2.3.dmg',
+      url: 'http://localhost:6688/ezip/release/MacZip_V2.3.dmg',
       dir: await tmpdir()
     })
 
