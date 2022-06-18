@@ -48,7 +48,7 @@ describe('tasks', () => {
     const decryptTaskObj = tasks.createDecryptFileTask(cipherFilePath, '123456')
 
     expect(decryptTaskObj.title).not.toBeNull()
-    expect(decryptTaskObj.skip(ctx)).toBeTruthy()
+    expect(decryptTaskObj.skip(ctx)).toBeFalsy()
 
     decryptTaskObj.task(ctx)
     expect(ctx.text).toContain('downloadUrl')

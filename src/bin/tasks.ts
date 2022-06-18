@@ -38,7 +38,7 @@ export function createDecryptFileTask(filePath: string, password: string) {
 
   return {
     title: `Decrypt ${fileName} file`,
-    skip: (ctx: IListrContext) => isHashCode(ctx.text),
+    skip: (ctx: IListrContext) => !isHashCode(ctx.text),
     task: (ctx: IListrContext) => {
       try {
         ctx.text = decrypt(ctx.text, password)
