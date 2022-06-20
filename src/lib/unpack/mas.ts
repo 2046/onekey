@@ -4,7 +4,7 @@ import download from '../donwload'
 import { exec, which, tmpdir, MAS_PKG_URL, appdir } from '../utils'
 
 export default async function unmas(appid: string, dest: string) {
-  if (isLogined()) {
+  if (!isLogined()) {
     throw new Error('To download apps from the Mac App Store, you need to login to your Apple ID manually.')
   }
 
@@ -25,7 +25,7 @@ export default async function unmas(appid: string, dest: string) {
 }
 
 function isLogined() {
-  const { stdout } = exec('defaults read MobileMeAccounts | grep AccountID | cut -d " -f2')
+  const { stdout } = exec('defaults read MobileMeAccounts | grep AccountID | cut -d \\" -f2')
 
   return !!stdout
 }
