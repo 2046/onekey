@@ -41,6 +41,6 @@ export async function isInstalled(appName: string) {
   } catch (error) {
     appName = appName.toLowerCase()
 
-    return which(appName) ? appName : ''
+    return which(appName) ? `/usr/local/bin/${appName}` : ''
   }
 }
