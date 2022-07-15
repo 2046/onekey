@@ -102,7 +102,7 @@
     - install
 - type: app
   name: Brew
-  downloadUrl: 'https://github.com/Homebrew/brew/archive/refs/heads/master.zip'
+  downloadUrl: 'http://localhost:6688/Homebrew/brew/archive/refs/heads/master.zip'
   action:
     - install
 - type: command
