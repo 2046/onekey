@@ -4,7 +4,7 @@ import { basename } from 'path'
 import { promisify } from 'util'
 import { IListrContext, IPackOpition } from './typing'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
-import { download, install, exec, isAppleCPU, tmpdir, appdir } from '../lib'
+import { download, install, exec, isAppleCPU, tmpdir, appdir, isInstalled } from '../lib'
 import { parse, decrypt, loadFile, isMasUrl, isAppType, isHashCode, isPackFile, isCommandType, resolveMasUrl } from './utils'
 
 export function createFileFormatVerifyTask(filePath: string) {
@@ -156,7 +156,11 @@ function createInstallTask(app: IPackOpition) {
     title: 'Installing',
     task: async (ctx: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
       try {
-        const filePath = await install(<string>ctx.filePaths.get(app.name), appdir())
+        let filePath = await isInstalled(app.name)
+
+        if (!filePath) {
+          filePath = await install(<string>ctx.filePaths.get(app.name), appdir())
+        }
 
         task.title = 'Installed'
         ctx.filePaths.set(app.name, filePath)

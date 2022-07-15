@@ -35,8 +35,12 @@ export async function tmpdir() {
 
 export async function isInstalled(appName: string) {
   try {
-    return (await lstat(join(appdir(), `${appName}.app`))).isDirectory()
+    const filePath = join(appdir(), `${appName}.app`)
+
+    return (await lstat(filePath)).isDirectory() ? filePath : ''
   } catch (error) {
-    return which(appName.toLowerCase())
+    appName = appName.toLowerCase()
+
+    return which(appName) ? appName : ''
   }
 }
