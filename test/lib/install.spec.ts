@@ -12,7 +12,7 @@ describe('install', () => {
       dir: await tmpdir()
     })
 
-    const filePath = await install(result)
+    const filePath = await install(result, appdir())
 
     expect((await lstat(filePath)).isDirectory()).toBeTruthy()
   })
@@ -24,7 +24,7 @@ describe('install', () => {
     })
 
     await expect(async () => {
-      await install(result)
+      await install(result, appdir())
     }).rejects.toThrow()
   })
 
@@ -34,13 +34,13 @@ describe('install', () => {
       dir: await tmpdir()
     })
 
-    const filePath = await install(result)
+    const filePath = await install(result, appdir())
 
     expect((await lstat(filePath)).isDirectory()).toBeTruthy()
   }, 20000)
 
   test('install mas', async () => {
-    const filePath = await install('1287239339')
+    const filePath = await install('1287239339', appdir())
 
     expect((await lstat(filePath)).isDirectory()).toBeTruthy()
   })
