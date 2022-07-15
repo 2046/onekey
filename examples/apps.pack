@@ -8,7 +8,7 @@
   action:
     - install
 - type: app
-  name: Spectable
+  name: Spectacle
   downloadUrl: 'http://localhost:6688/eczarny/spectacle/releases/download/1.2/Spectacle+1.2.zip'
   action:
     - install
