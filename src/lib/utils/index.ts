@@ -1,12 +1,12 @@
 import os from 'os'
 import * as pkgutil from './pkgutil'
 import { extname, join } from 'path'
-import { cp, exec, which } from './shell'
 import { mkdtemp, lstat } from 'fs/promises'
+import { cp, exec, which, execute } from './shell'
 import { MAS_PKG_URL, isAppleCPU, Homebrew_DIR } from './constants'
 
 export { pkgutil }
-export { cp, exec, which }
+export { cp, exec, which, execute }
 export { MAS_PKG_URL, isAppleCPU, Homebrew_DIR }
 
 export function toInt(text: string) {

@@ -1,6 +1,5 @@
 import plist from 'plist'
-import { exec } from './shell'
-import sudo from 'sudo-prompt'
+import { exec, execute } from './shell'
 
 export type IPlist = {
   pkgid: string
@@ -29,18 +28,7 @@ export function files(pkgid: string) {
 }
 
 export function installer(pathToPackage: string, mountPoint: string) {
-  return new Promise<{
-    stdout: string | Buffer | undefined
-    stderr: string | Buffer | undefined
-  }>((resolve, reject) => {
-    sudo.exec(`installer -pkg ${convertSpaces(pathToPackage)} -target ${mountPoint}`, (error, stdout, stderr) => {
-      if (error) {
-        return reject(error)
-      }
-
-      resolve({ stdout, stderr })
-    })
-  })
+  return execute(`installer -pkg ${convertSpaces(pathToPackage)} -target ${mountPoint}`)
 }
 
 function convertSpaces(filePath: string) {
