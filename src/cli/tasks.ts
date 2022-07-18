@@ -4,7 +4,7 @@ import { basename } from 'path'
 import { promisify } from 'util'
 import { IListrContext, IPackOpition } from './typing'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
-import { download, install, exec, isAppleCPU, tmpdir, appdir, isInstalled } from '../lib'
+import { download, install, exec, isAppleCPU, Homebrew_DIR, tmpdir, appdir, isInstalled } from '../lib'
 import { parse, decrypt, loadFile, isMasUrl, isAppType, isHashCode, isPackFile, isCommandType, resolveMasUrl } from './utils'
 
 export function createFileFormatVerifyTask(filePath: string) {
@@ -159,7 +159,11 @@ function createInstallTask(app: IPackOpition) {
         let filePath = await isInstalled(app.name)
 
         if (!filePath) {
-          filePath = await install(<string>ctx.filePaths.get(app.name), appdir())
+          filePath = await install({
+            appName: app.name,
+            dest: getDestDirectory(app.name),
+            filePath: <string>ctx.filePaths.get(app.name)
+          })
         }
 
         task.title = 'Installed'
@@ -176,5 +180,13 @@ function getDownloadUrl(url: string | Array<Array<string>>) {
     return url.filter((item) => item[0] === (isAppleCPU ? 'arm' : 'intel'))[0][1]
   } else {
     return url
+  }
+}
+
+function getDestDirectory(appName: string) {
+  if (appName.toLowerCase() === 'brew') {
+    return Homebrew_DIR
+  } else {
+    return appdir()
   }
 }

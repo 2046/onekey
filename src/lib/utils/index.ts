@@ -3,11 +3,11 @@ import * as pkgutil from './pkgutil'
 import { extname, join } from 'path'
 import { cp, exec, which } from './shell'
 import { mkdtemp, lstat } from 'fs/promises'
-import { MAS_PKG_URL, isAppleCPU } from './constants'
+import { MAS_PKG_URL, isAppleCPU, Homebrew_DIR } from './constants'
 
 export { pkgutil }
 export { cp, exec, which }
-export { MAS_PKG_URL, isAppleCPU }
+export { MAS_PKG_URL, isAppleCPU, Homebrew_DIR }
 
 export function toInt(text: string) {
   return text ? parseInt(text, 10) : 0

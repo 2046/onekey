@@ -12,7 +12,11 @@ describe('install', () => {
       dir: await tmpdir()
     })
 
-    const filePath = await install(result, appdir())
+    const filePath = await install({
+      dest: appdir(),
+      appName: 'test',
+      filePath: result
+    })
 
     expect((await lstat(filePath)).isDirectory()).toBeTruthy()
   })
@@ -24,7 +28,11 @@ describe('install', () => {
     })
 
     await expect(async () => {
-      await install(result, appdir())
+      await install({
+        dest: appdir(),
+        appName: 'test',
+        filePath: result
+      })
     }).rejects.toThrow()
   })
 
@@ -34,13 +42,21 @@ describe('install', () => {
       dir: await tmpdir()
     })
 
-    const filePath = await install(result, appdir())
+    const filePath = await install({
+      dest: appdir(),
+      appName: 'test',
+      filePath: result
+    })
 
     expect((await lstat(filePath)).isDirectory()).toBeTruthy()
   }, 20000)
 
   test('install mas', async () => {
-    const filePath = await install('1287239339', appdir())
+    const filePath = await install({
+      dest: appdir(),
+      appName: 'test',
+      filePath: '1287239339'
+    })
 
     expect((await lstat(filePath)).isDirectory()).toBeTruthy()
   })
