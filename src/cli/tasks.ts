@@ -67,7 +67,11 @@ export function createInstallAppTasks(ctx: IListrContext) {
     .map((app) => {
       return {
         title: app.alias || app.name,
-        task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+        task: async (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+          if (await isInstalled(app.name)) {
+            return []
+          }
+
           let actions = [createDownloadTask(app)]
 
           if (app.action && app.action.includes('install')) {
@@ -156,15 +160,11 @@ function createInstallTask(app: IPackOpition) {
     title: 'Installing',
     task: async (ctx: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
       try {
-        let filePath = await isInstalled(app.name)
-
-        if (!filePath) {
-          filePath = await install({
-            appName: app.name,
-            dest: getDestDirectory(app.name),
-            filePath: <string>ctx.filePaths.get(app.name)
-          })
-        }
+        const filePath = await install({
+          appName: app.name,
+          dest: getDestDirectory(app.name),
+          filePath: <string>ctx.filePaths.get(app.name)
+        })
 
         task.title = 'Installed'
         ctx.filePaths.set(app.name, filePath)
