@@ -27,7 +27,7 @@ export function execute(command: string) {
 }
 
 export function which(command: string) {
-  const { stdout } = shelljs.which(command) || {}
+  const { stdout = '' } = shelljs.which(command) || {}
 
-  return !!stdout
+  return stdout
 }

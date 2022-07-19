@@ -39,8 +39,6 @@ export async function isInstalled(appName: string) {
 
     return (await lstat(filePath)).isDirectory() ? filePath : ''
   } catch (error) {
-    appName = appName.toLowerCase()
-
-    return which(appName) ? `/usr/local/bin/${appName}` : ''
+    return which(appName.toLowerCase())
   }
 }
