@@ -115,5 +115,10 @@
   description: Show path bar
   cmd: defaults write com.apple.finder "ShowPathbar" -bool "true"
 - type: command
+  description: Trackpad three finger drag
+  cmd:
+    - defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
+    - defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
+- type: command
   description: Reload finder settings
   cmd: killall Finder
