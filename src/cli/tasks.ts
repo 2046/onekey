@@ -66,7 +66,7 @@ export function createInstallAppTasks(ctx: IListrContext) {
     .filter((task) => isAppType(task))
     .map((app) => {
       return {
-        title: app.name,
+        title: app.alias || app.name,
         task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
           let actions = [createDownloadTask(app)]
 

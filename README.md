@@ -73,6 +73,7 @@ The contents of the configuration file use `YAML` syntax, and the file extension
 ```yml
 - type: # operation type, app or command type
   name: # application name, only works if type is app
+  alias: # application alias, for applications with non-English name, not required
   downloadUrl: # application install link, in the case of mac os, you can also specify the link for the intel and arm versions separately
   action: # action after application downloaded, usually install
   description: # command description, only works if type is command

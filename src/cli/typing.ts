@@ -1,5 +1,6 @@
 export interface IPackOpition {
   name: string
+  alias?: string
   description: string
   action: Array<string>
   type: 'command' | 'app'
