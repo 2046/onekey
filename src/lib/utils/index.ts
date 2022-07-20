@@ -39,7 +39,19 @@ export async function isInstalled(appName: string) {
 
     return (await lstat(filePath)).isDirectory() ? filePath : ''
   } catch (error) {
-    return which(appName.toLowerCase())
+    appName = appName.toLowerCase()
+
+    return appName === 'git' ? whichGit() : which(appName)
+  }
+}
+
+function whichGit() {
+  const { code, stdout } = exec('git version')
+
+  if (code !== 0 || stdout.indexOf('Apple') !== -1) {
+    return ''
+  } else {
+    return which('git')
   }
 }
 
