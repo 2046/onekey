@@ -1,4 +1,4 @@
-import { pkgutil } from '../utils'
+import { pkgutil, which } from '../utils'
 import { join, basename } from 'path'
 
 export default async function unpkg(filePath: string, dest: string) {
@@ -23,6 +23,6 @@ function getCurrentPkgs(previousValue: Array<string>, currentValue: Array<string
 
     return join(dest, pkgFiles.filter((fileName) => /^[^/]+$/.test(fileName))[0])
   } else {
-    return join('/usr/local/bin', pkgInfos.map((info) => basename(pkgutil.files(info.pkgid)[0]))[0])
+    return which(pkgInfos.map((info) => basename(pkgutil.files(info.pkgid)[0]))[0])
   }
 }
