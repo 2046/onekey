@@ -10,9 +10,9 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
 
 ;(async function main() {
   if (filePath && password && op === '-e') {
-    return await crypto.encrypt(filePath, password)
+    return console.log(await crypto.encrypt(filePath, password))
   } else if (filePath && password && op === '-d') {
-    return await crypto.decrypt(filePath, password)
+    return console.log(await crypto.decrypt(filePath, password))
   }
 
   const listr = new Listr<IListrContext>(
