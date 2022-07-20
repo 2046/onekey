@@ -99,7 +99,11 @@ export function createExecCommandTasks(ctx: IListrContext) {
         task: () => {
           try {
             for (const cmd of cmds) {
-              exec(cmd)
+              const { code, stderr } = exec(cmd)
+
+              if (code) {
+                throw new Error(stderr)
+              }
             }
           } catch (error) {
             throw new Error(chalk.red((<Error>error).message))

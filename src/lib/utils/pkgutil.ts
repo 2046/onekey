@@ -13,18 +13,19 @@ export type IPlist = {
 export function pkgs() {
   const { stdout } = exec('pkgutil --pkgs-plist')
 
-  return <Array<string>>plist.parse(stdout.trim())
+  return stdout ? <Array<string>>plist.parse(stdout.trim()) : []
 }
 
 export function pkgInfo(pkgid: string) {
   const { stdout } = exec(`pkgutil --pkg-info-plist ${pkgid}`)
 
-  return <IPlist>plist.parse(stdout.trim())
+  return stdout ? <IPlist>plist.parse(stdout.trim()) : <IPlist>{}
 }
 
 export function files(pkgid: string) {
   const { stdout } = exec(`pkgutil --files ${pkgid} --only-files`)
-  return stdout.trim().split('\n')
+
+  return stdout ? stdout.trim().split('\n') : []
 }
 
 export function installer(pathToPackage: string, mountPoint: string) {
