@@ -4,7 +4,7 @@ import { basename } from 'path'
 import { promisify } from 'util'
 import { IListrContext, IPackOpition } from './typing'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
-import { download, install, exec, isAppleCPU, Homebrew_DIR, tmpdir, appdir, isInstalled, memoize } from '../lib'
+import { download, install, exec, isAppleCPU, Homebrew_DIR, tmpdir, appdir, isInstalled, commandLineTools } from '../lib'
 import { parse, decrypt, loadFile, isMasUrl, isAppType, isHashCode, isPackFile, isCommandType, resolveMasUrl } from './utils'
 
 export function createFileFormatVerifyTask(filePath: string) {
@@ -62,35 +62,8 @@ export function createParseFileTask(filePath: string) {
 }
 
 export function createInstallAppTasks(ctx: IListrContext) {
-  const tasks = [
-    {
-      title: 'Commandline Tools',
-      task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-        return task.newListr([
-          {
-            title: 'Downloading',
-            task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-              exec('touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress')
-              exec(`softwareupdate -d "${memoize(getCommandLineToolsLabel)}"`)
-
-              task.title = 'Downloaded'
-            }
-          },
-          {
-            title: 'Installing',
-            task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-              exec(`softwareupdate -i "${memoize(getCommandLineToolsLabel)}"`)
-
-              task.title = 'Installed'
-            }
-          }
-        ])
-      }
-    }
-  ]
-
   return [
-    ...tasks,
+    createCommandLineToolsTasks(),
     ...ctx.tasks
       .filter((task) => isAppType(task))
       .map((app) => {
@@ -205,6 +178,34 @@ function createInstallTask(app: IPackOpition) {
   }
 }
 
+function createCommandLineToolsTasks() {
+  return {
+    title: 'CommandLineTools',
+    task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+      return commandLineTools.isInstalled()
+        ? []
+        : task.newListr([
+            {
+              title: 'Downloading',
+              task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+                commandLineTools.download()
+
+                task.title = 'Downloaded'
+              }
+            },
+            {
+              title: 'Installing',
+              task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+                commandLineTools.install()
+
+                task.title = 'Installed'
+              }
+            }
+          ])
+    }
+  }
+}
+
 function getDownloadUrl(url: string | Array<Array<string>>) {
   if (Array.isArray(url)) {
     return url.filter((item) => item[0] === (isAppleCPU ? 'arm' : 'intel'))[0][1]
@@ -219,10 +220,4 @@ function getDestDirectory(appName: string) {
   } else {
     return appdir()
   }
-}
-
-function getCommandLineToolsLabel() {
-  const { stdout, code } = exec('softwareupdate -l | grep "*.*Command Line" | head -n 1')
-
-  return code ? '' : stdout.replace('* Label: ', '').trim()
 }
