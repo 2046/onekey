@@ -89,13 +89,15 @@ describe('tasks', () => {
       [
         {
           title: 'install apps',
-          task: (_, task) => {
+          task: async (_, task) => {
             const result = tasks.createInstallAppTasks(ctx)
 
             expect(Array.isArray(result)).toBeTruthy()
             expect(result[0].title).not.toBeNull()
 
-            expect(result[0].task(_, task).tasks.map((item) => item.title)).toEqual(['Downloading', 'Installing'])
+            const results = (await result[0].task(_, task)) as Listr<IListrContext, any, any>
+
+            expect(results.tasks.map((item) => item.title)).toEqual(['Downloading', 'Installing'])
           }
         }
       ],

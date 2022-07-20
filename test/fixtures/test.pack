@@ -1,5 +1,5 @@
 - type: app
-  name: test
+  name: testtest
   downloadUrl: 'https://example.com/downloads/test.zip'
   action:
     - install
