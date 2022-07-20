@@ -1,5 +1,5 @@
 import decompress from 'decompress'
-import { exec, execute } from '../utils'
+import { execute } from '../utils'
 
 export default async function brew(filePath: string, dest: string) {
   try {
@@ -7,8 +7,7 @@ export default async function brew(filePath: string, dest: string) {
 
     await execute(`mkdir -p ${dest} && chmod 777 ${dest}`)
     await decompress(filePath, dest, { strip: 1 })
-
-    exec(`ln -s ${dest}/bin/brew ${binPath}`)
+    await execute(`ln -s ${dest}/bin/brew ${binPath}`)
 
     return binPath
   } catch (error) {
