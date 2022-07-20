@@ -187,7 +187,20 @@ function createCommandLineToolsTasks() {
     title: 'CommandLineTools',
     task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
       return commandLineTools.isInstalled()
-        ? []
+        ? task.newListr([
+            {
+              title: 'Downloading',
+              task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+                task.title = 'Downloaded'
+              }
+            },
+            {
+              title: 'Installing',
+              task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+                task.title = 'Installed'
+              }
+            }
+          ])
         : task.newListr([
             {
               title: 'Downloading',
