@@ -42,3 +42,22 @@ export async function isInstalled(appName: string) {
     return which(appName.toLowerCase())
   }
 }
+
+interface IMemoize<T extends () => ReturnType<T>> {
+  (func: T, ...args: Parameters<T>): ReturnType<T>
+  hash: Map<T, ReturnType<T>>
+}
+
+export function memoize<T extends (...args: Parameters<T>) => ReturnType<T>>(func: T, ...args: Parameters<T>): ReturnType<T> {
+  const cache: IMemoize<T> = memoize as unknown as IMemoize<T>
+
+  if (cache.hash) {
+    cache.hash = new Map()
+  }
+
+  if (!cache.hash.has(func)) {
+    cache.hash.set(func, func(...args))
+  }
+
+  return cache.hash.get(func) as ReturnType<T>
+}

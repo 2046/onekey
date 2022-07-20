@@ -4,7 +4,7 @@ import { basename } from 'path'
 import { promisify } from 'util'
 import { IListrContext, IPackOpition } from './typing'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
-import { download, install, exec, isAppleCPU, Homebrew_DIR, tmpdir, appdir, isInstalled } from '../lib'
+import { download, install, exec, isAppleCPU, Homebrew_DIR, tmpdir, appdir, isInstalled, memoize } from '../lib'
 import { parse, decrypt, loadFile, isMasUrl, isAppType, isHashCode, isPackFile, isCommandType, resolveMasUrl } from './utils'
 
 export function createFileFormatVerifyTask(filePath: string) {
@@ -62,26 +62,56 @@ export function createParseFileTask(filePath: string) {
 }
 
 export function createInstallAppTasks(ctx: IListrContext) {
-  return ctx.tasks
-    .filter((task) => isAppType(task))
-    .map((app) => {
-      return {
-        title: app.alias || app.name,
-        task: async (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-          if (await isInstalled(app.name)) {
-            return []
+  const tasks = [
+    {
+      title: 'Commandline Tools',
+      task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+        return task.newListr([
+          {
+            title: 'Downloading',
+            task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+              exec('touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress')
+              exec(`softwareupdate -d "${memoize(getCommandLineToolsLabel)}"`)
+
+              task.title = 'Downloaded'
+            }
+          },
+          {
+            title: 'Installing',
+            task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+              exec(`softwareupdate -i "${memoize(getCommandLineToolsLabel)}"`)
+
+              task.title = 'Installed'
+            }
           }
-
-          let actions = [createDownloadTask(app)]
-
-          if (app.action && app.action.includes('install')) {
-            actions = [...actions, createInstallTask(app)]
-          }
-
-          return task.newListr(actions)
-        }
+        ])
       }
-    })
+    }
+  ]
+
+  return [
+    ...tasks,
+    ...ctx.tasks
+      .filter((task) => isAppType(task))
+      .map((app) => {
+        return {
+          title: app.alias || app.name,
+          task: async (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+            if (await isInstalled(app.name)) {
+              return []
+            }
+
+            let actions = [createDownloadTask(app)]
+
+            if (app.action && app.action.includes('install')) {
+              actions = [...actions, createInstallTask(app)]
+            }
+
+            return task.newListr(actions)
+          }
+        }
+      })
+  ]
 }
 
 export function createExecCommandTasks(ctx: IListrContext) {
@@ -189,4 +219,10 @@ function getDestDirectory(appName: string) {
   } else {
     return appdir()
   }
+}
+
+function getCommandLineToolsLabel() {
+  const { stdout, code } = exec('softwareupdate -l | grep "*.*Command Line" | head -n 1')
+
+  return code ? '' : stdout.replace('* Label: ', '').trim()
 }
