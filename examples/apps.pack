@@ -124,5 +124,22 @@
     - defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
     - defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
 - type: command
+  description: Remove persistent apps in dock
+  cmd: defaults write com.apple.dock persistent-apps -array
+- type: command
+  description: Smaller icon sizes in dock
+  cmd: defaults write com.apple.dock tilesize -int 36
+- type: command
+  description: Turn dock auto hide on
+  cmd: defaults write com.apple.dock autohide -bool true
+- type: command
+  description: Remove dock show delay
+  cmd:
+    - defaults write com.apple.dock autohide-delay -float 0
+    - defaults write com.apple.dock autohide-time-modifier -float 0
+- type: command
+  description: Reload dock settings
+  cmd: killall Dock
+- type: command
   description: Reload finder settings
   cmd: killall Finder
