@@ -35,12 +35,18 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
       {
         title: 'Install Apps',
         skip: (ctx) => !ctx.tasks.filter((task) => isAppType(task))[0],
-        task: (ctx, task) => task.newListr(tasks.createInstallAppTasks(ctx))
+        task: (ctx, task) =>
+          task.newListr(tasks.createInstallAppTasks(ctx), {
+            rendererOptions: { collapse: false }
+          })
       },
       {
         title: 'Change Default Settings',
         skip: (ctx) => !ctx.tasks.filter((task) => isCommandType(task))[0],
-        task: (ctx, task) => task.newListr(tasks.createExecCommandTasks(ctx))
+        task: (ctx, task) =>
+          task.newListr(tasks.createExecCommandTasks(ctx), {
+            rendererOptions: { collapse: false }
+          })
       },
       {
         title: 'Remove Temporary Download Directory',

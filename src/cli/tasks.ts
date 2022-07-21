@@ -80,7 +80,11 @@ export function createInstallAppTasks(ctx: IListrContext) {
               actions = [...actions, createInstallTask(app)]
             }
 
-            return task.newListr(actions)
+            return task.newListr(actions, {
+              rendererOptions: {
+                collapse: true
+              }
+            })
           }
         }
       })
@@ -187,38 +191,52 @@ function createCommandLineToolsTasks() {
     title: 'CommandLineTools',
     task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
       return commandLineTools.isInstalled()
-        ? task.newListr([
-            {
-              title: 'Downloading',
-              task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-                task.title = 'Downloaded'
+        ? task.newListr(
+            [
+              {
+                title: 'Downloading',
+                task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+                  task.title = 'Downloaded'
+                }
+              },
+              {
+                title: 'Installing',
+                task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+                  task.title = 'Installed'
+                }
               }
-            },
+            ],
             {
-              title: 'Installing',
-              task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-                task.title = 'Installed'
-              }
-            }
-          ])
-        : task.newListr([
-            {
-              title: 'Downloading',
-              task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-                commandLineTools.download()
-
-                task.title = 'Downloaded'
-              }
-            },
-            {
-              title: 'Installing',
-              task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-                commandLineTools.install()
-
-                task.title = 'Installed'
+              rendererOptions: {
+                collapse: true
               }
             }
-          ])
+          )
+        : task.newListr(
+            [
+              {
+                title: 'Downloading',
+                task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+                  commandLineTools.download()
+
+                  task.title = 'Downloaded'
+                }
+              },
+              {
+                title: 'Installing',
+                task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+                  commandLineTools.install()
+
+                  task.title = 'Installed'
+                }
+              }
+            ],
+            {
+              rendererOptions: {
+                collapse: true
+              }
+            }
+          )
     }
   }
 }
