@@ -12,134 +12,134 @@
   downloadUrl: 'http://127.0.0.1:6688/eczarny/spectacle/releases/download/1.2/Spectacle+1.2.zip'
   action:
     - install
-# - type: app
-#   name: Motrix
-#   downloadUrl: 'http://127.0.0.1:6688/agalwood/Motrix/releases/download/v1.6.11/Motrix-1.6.11.dmg'
-#   action:
-#     - install
-# - type: app
-#   name: Notion
-#   downloadUrl:
-#     - - intel
-#       - 'http://127.0.0.1:6688/Notion-2.0.22.dmg'
-#     - - arm
-#       - 'http://127.0.0.1:6688/Notion-2.0.21-arm64.dmg'
-#   action:
-#     - install
-# - type: app
-#   name: QQMusic
-#   alias: QQ音乐
-#   downloadUrl: 'http://127.0.0.1:6688/dldir1.qq.com/music/clntupate/mac/QQMusicMac_Mgr.dmg'
-#   action:
-#     - install
-# - type: app
-#   name: BaiduNetdisk_mac
-#   alias: 百度网盘
-#   downloadUrl: 'http://127.0.0.1:6688/issue/netdisk/MACguanjia/BaiduNetdisk_mac_4.10.1.dmg'
-#   action:
-#     - install
-# - type: app
-#   name: DingTalk
-#   alias: 钉钉
-#   downloadUrl:
-#     - - intel
-#       - 'http://127.0.0.1:6688/dingtalk-desktop/mac_dmg/Release/DingTalk_v6.5.20.10.dmg'
-#     - - arm
-#       - 'http://127.0.0.1:6688/dingtalk-desktop/mac_dmg/Release/M1-Beta/DingTalk-ARM64-6.5.12.2.dmg'
-#   action:
-#     - install
-# - type: app
-#   name: WeChat
-#   alias: 微信
-#   downloadUrl: 'http://127.0.0.1:6688/weixin/mac/WeChatMac.dmg'
-#   action:
-#     - install
-# - type: app
-#   name: AppCleaner
-#   downloadUrl: 'http://127.0.0.1:6688/downloads/AppCleaner_3.6.4.zip'
-#   action:
-#     - install
+- type: app
+  name: Motrix
+  downloadUrl: 'http://127.0.0.1:6688/agalwood/Motrix/releases/download/v1.6.11/Motrix-1.6.11.dmg'
+  action:
+    - install
+- type: app
+  name: Notion
+  downloadUrl:
+    - - intel
+      - 'http://127.0.0.1:6688/Notion-2.0.22.dmg'
+    - - arm
+      - 'http://127.0.0.1:6688/Notion-2.0.21-arm64.dmg'
+  action:
+    - install
+- type: app
+  name: QQMusic
+  alias: QQ音乐
+  downloadUrl: 'http://127.0.0.1:6688/dldir1.qq.com/music/clntupate/mac/QQMusicMac_Mgr.dmg'
+  action:
+    - install
+- type: app
+  name: BaiduNetdisk_mac
+  alias: 百度网盘
+  downloadUrl: 'http://127.0.0.1:6688/issue/netdisk/MACguanjia/BaiduNetdisk_mac_4.10.1.dmg'
+  action:
+    - install
+- type: app
+  name: DingTalk
+  alias: 钉钉
+  downloadUrl:
+    - - intel
+      - 'http://127.0.0.1:6688/dingtalk-desktop/mac_dmg/Release/DingTalk_v6.5.20.10.dmg'
+    - - arm
+      - 'http://127.0.0.1:6688/dingtalk-desktop/mac_dmg/Release/M1-Beta/DingTalk-ARM64-6.5.12.2.dmg'
+  action:
+    - install
+- type: app
+  name: WeChat
+  alias: 微信
+  downloadUrl: 'http://127.0.0.1:6688/weixin/mac/WeChatMac.dmg'
+  action:
+    - install
+- type: app
+  name: AppCleaner
+  downloadUrl: 'http://127.0.0.1:6688/downloads/AppCleaner_3.6.4.zip'
+  action:
+    - install
 - type: app
   name: MacZip
   downloadUrl: 'http://127.0.0.1:6688/ezip/release/MacZip_V2.3.dmg'
   action:
     - install
-# - type: app
-#   name: Visual Studio Code
-#   downloadUrl: 'http://127.0.0.1:6688/stable/30d9c6cd9483b2cc586687151bcbcd635f373630/VSCode-darwin-universal.zip'
-#   action:
-#     - install
-# - type: app
-#   name: Shottr
-#   downloadUrl: 'http://127.0.0.1:6688/dl/Shottr-1.5.3.dmg'
-#   action:
-#     - install
-# - type: app
-#   name: ColorSlurp
-#   downloadUrl: 'https://apps.apple.com/cn/app/id1287239339'
-#   action:
-#     - install
-# - type: app
-#   name: Charles
-#   downloadUrl: 'http://127.0.0.1:6688/assets/release/4.6.2/charles-proxy-4.6.2.dmg'
-#   action:
-#     - install
-# - type: app
-#   name: Alfred 4
-#   downloadUrl: 'http://127.0.0.1:6688/Alfred_4.6.6_1303.dmg'
-#   action:
-#     - install
-# - type: app
-#   name: ClashX Pro
-#   downloadUrl: 'http://127.0.0.1:6688/ClashX.dmg'
-#   action:
-#     - install
-# - type: app
-#   name: Git
-#   downloadUrl: 'http://127.0.0.1:6688/project/git-osx-installer/git-2.33.0-intel-universal-mavericks.dmg'
-#   action:
-#     - install
-# - type: app
-#   name: iTerm
-#   downloadUrl: 'http://127.0.0.1:6688/downloads/stable/iTerm2-3_4_15.zip'
-#   action:
-#     - install
-# - type: app
-#   name: Brew
-#   downloadUrl: 'http://127.0.0.1:6688/Homebrew/brew/archive/refs/heads/master.zip'
-#   action:
-#     - install
+- type: app
+  name: Visual Studio Code
+  downloadUrl: 'http://127.0.0.1:6688/stable/30d9c6cd9483b2cc586687151bcbcd635f373630/VSCode-darwin-universal.zip'
+  action:
+    - install
+- type: app
+  name: Shottr
+  downloadUrl: 'http://127.0.0.1:6688/dl/Shottr-1.5.3.dmg'
+  action:
+    - install
+- type: app
+  name: ColorSlurp
+  downloadUrl: 'https://apps.apple.com/cn/app/id1287239339'
+  action:
+    - install
+- type: app
+  name: Charles
+  downloadUrl: 'http://127.0.0.1:6688/assets/release/4.6.2/charles-proxy-4.6.2.dmg'
+  action:
+    - install
+- type: app
+  name: Alfred 4
+  downloadUrl: 'http://127.0.0.1:6688/Alfred_4.6.6_1303.dmg'
+  action:
+    - install
+- type: app
+  name: ClashX Pro
+  downloadUrl: 'http://127.0.0.1:6688/ClashX.dmg'
+  action:
+    - install
+- type: app
+  name: Git
+  downloadUrl: 'http://127.0.0.1:6688/project/git-osx-installer/git-2.33.0-intel-universal-mavericks.dmg'
+  action:
+    - install
+- type: app
+  name: iTerm
+  downloadUrl: 'http://127.0.0.1:6688/downloads/stable/iTerm2-3_4_15.zip'
+  action:
+    - install
+- type: app
+  name: Brew
+  downloadUrl: 'http://127.0.0.1:6688/Homebrew/brew/archive/refs/heads/master.zip'
+  action:
+    - install
 - type: command
   description: Show all file extensions
   cmd: defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true"
-# - type: command
-#   description: Show hidden files
-#   cmd: defaults write com.apple.finder "AppleShowAllFiles" -bool "true"
-# - type: command
-#   description: Show path bar
-#   cmd: defaults write com.apple.finder "ShowPathbar" -bool "true"
-# - type: command
-#   description: Trackpad three finger drag
-#   cmd:
-#     - defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
-#     - defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
-# - type: command
-#   description: Remove persistent apps in dock
-#   cmd: defaults write com.apple.dock persistent-apps -array
-# - type: command
-#   description: Smaller icon sizes in dock
-#   cmd: defaults write com.apple.dock tilesize -int 36
-# - type: command
-#   description: Turn dock auto hide on
-#   cmd: defaults write com.apple.dock autohide -bool true
-# - type: command
-#   description: Remove dock show delay
-#   cmd:
-#     - defaults write com.apple.dock autohide-delay -float 0
-#     - defaults write com.apple.dock autohide-time-modifier -float 0
-# - type: command
-#   description: Reload dock settings
-#   cmd: killall Dock
-# - type: command
-#   description: Reload finder settings
-#   cmd: killall Finder
+- type: command
+  description: Show hidden files
+  cmd: defaults write com.apple.finder "AppleShowAllFiles" -bool "true"
+- type: command
+  description: Show path bar
+  cmd: defaults write com.apple.finder "ShowPathbar" -bool "true"
+- type: command
+  description: Trackpad three finger drag
+  cmd:
+    - defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
+    - defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
+- type: command
+  description: Remove persistent apps in dock
+  cmd: defaults write com.apple.dock persistent-apps -array
+- type: command
+  description: Smaller icon sizes in dock
+  cmd: defaults write com.apple.dock tilesize -int 36
+- type: command
+  description: Turn dock auto hide on
+  cmd: defaults write com.apple.dock autohide -bool true
+- type: command
+  description: Remove dock show delay
+  cmd:
+    - defaults write com.apple.dock autohide-delay -float 0
+    - defaults write com.apple.dock autohide-time-modifier -float 0
+- type: command
+  description: Reload dock settings
+  cmd: killall Dock
+- type: command
+  description: Reload finder settings
+  cmd: killall Finder
