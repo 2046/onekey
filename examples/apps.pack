@@ -49,7 +49,7 @@
   action:
     - install
 - type: app
-  name: WaChat
+  name: WeChat
   alias: 微信
   downloadUrl: 'http://localhost:6688/weixin/mac/WeChatMac.dmg'
   action:
