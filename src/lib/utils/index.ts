@@ -9,6 +9,11 @@ export { pkgutil }
 export { cp, exec, which, execute }
 export { MAS_PKG_URL, isAppleCPU, Homebrew_DIR }
 
+interface IMemoize<T extends () => ReturnType<T>> {
+  (func: T, ...args: Parameters<T>): ReturnType<T>
+  hash: Map<T, ReturnType<T>>
+}
+
 export function toInt(text: string) {
   return text ? parseInt(text, 10) : 0
 }
@@ -55,15 +60,10 @@ function whichGit() {
   }
 }
 
-interface IMemoize<T extends () => ReturnType<T>> {
-  (func: T, ...args: Parameters<T>): ReturnType<T>
-  hash: Map<T, ReturnType<T>>
-}
-
 export function memoize<T extends (...args: Parameters<T>) => ReturnType<T>>(func: T, ...args: Parameters<T>): ReturnType<T> {
   const cache: IMemoize<T> = memoize as unknown as IMemoize<T>
 
-  if (cache.hash) {
+  if (!cache.hash) {
     cache.hash = new Map()
   }
 
