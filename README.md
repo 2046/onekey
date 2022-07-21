@@ -2,6 +2,14 @@
 
 Install the applications and system settings needed for a new system with one click, get the system into working condition quickly.
 
+## Quickly
+
+Install the app using a script that automatically installs Node.js.
+
+```bash
+/bin/bash -c "$(curl -fsSL https://onekey.dev/install)" [filePath] [password]
+```
+
 ## Installation
 
 ```bash

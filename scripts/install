@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# download latest nodejs package
+curl "https://nodejs.org/dist/latest/node-${VERSION:-$(curl https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg"
+
+# install nodejs package
+sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target /
+
+# clean pkg file
+rm $HOME/Downloads/node-latest.pkg
+
+# exceute onekey install apps
+npx -y onekey "$0" "$1"
