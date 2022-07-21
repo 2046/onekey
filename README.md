@@ -11,7 +11,7 @@ npm install -g onekey
 ## Command line flags
 
 ```bash
-npx onekey [filePath] [password] [tools]
+npx -y onekey [filePath] [password] [tools]
 ```
 
 - **`filePath`**: configuration file address, support `local file` or `remote url` or `Github gist`.
@@ -35,9 +35,9 @@ onekey <github username>/<gist name>.pack
 Use the `npx` command to omit the installation step.
 
 ```bash
-npx onekey <local file>.pack
-npx onekey <https:// url>.pack
-npx onekey <github username>/<gist name>.pack
+npx -y onekey <local file>.pack
+npx -y onekey <https:// url>.pack
+npx -y onekey <github username>/<gist name>.pack
 ```
 
 ### Advanced
@@ -45,22 +45,22 @@ npx onekey <github username>/<gist name>.pack
 Using an encrypted configuration file secures the data, but you must enter the correct secret key when using it.
 
 ```bash
-npx onekey <local file>.pack <password>
-npx onekey <https:// url>.pack <password>
-npx onekey <github username>/<gist name>.pack <password>
+npx -y onekey <local file>.pack <password>
+npx -y onekey <https:// url>.pack <password>
+npx -y onekey <github username>/<gist name>.pack <password>
 ```
 
 Use encrypt & decrypt tools
 
 ```bash
-npx onekey <local file>.pack <password> -e # encrypt local file
-npx onekey <https:// url>.pack <password> -e # encrypt remote file
-npx onekey <github username>/<gist name>.pack <password> -e # encrypt gist file
+npx -y onekey <local file>.pack <password> -e # encrypt local file
+npx -y onekey <https:// url>.pack <password> -e # encrypt remote file
+npx -y onekey <github username>/<gist name>.pack <password> -e # encrypt gist file
 #==> hash code
 
-npx onekey <local file>.pack <password> -d # decrypt local file
-npx onekey <https:// url>.pack <password> -d # decrypt remote file
-npx onekey <github username>/<gist name>.pack <password> -d # decrypt gist file
+npx -y onekey <local file>.pack <password> -d # decrypt local file
+npx -y onekey <https:// url>.pack <password> -d # decrypt remote file
+npx -y onekey <github username>/<gist name>.pack <password> -d # decrypt gist file
 #==> yaml code
 ```
 
