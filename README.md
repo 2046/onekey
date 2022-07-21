@@ -76,6 +76,10 @@ npx -y onekey <github username>/<gist name>.pack <password> -d # decrypt gist fi
 
 The contents of the configuration file use `YAML` syntax, and the file extension must be `.pack`.
 
+### Note ⚠️
+
+**The `name` field identifies the application and is used to determine if the application is installed, so please use the correct application name.**
+
 ### Syntax
 
 ```yml
@@ -90,7 +94,35 @@ The contents of the configuration file use `YAML` syntax, and the file extension
 
 ### Example
 
-[Example](examples/apps.pack).
+```yml
+- type: app
+  name: Notion
+  downloadUrl:
+    - - intel
+      - 'https://desktop-release.notion-static.com/Notion-2.0.23.dmg'
+    - - arm
+      - 'https://desktop-release.notion-static.com/Notion-2.1.0-arm64.dmg'
+  action:
+    - install
+- type: app
+  name: Motrix
+  downloadUrl: 'https://github.com/agalwood/Motrix/releases/download/v1.6.11/Motrix-1.6.11.dmg'
+  action:
+    - install
+```
+
+```yml
+- type: command
+  description: Turn dock auto hide on
+  cmd: defaults write com.apple.dock autohide -bool true
+- type: command
+  description: Remove dock show delay
+  cmd:
+    - defaults write com.apple.dock autohide-delay -float 0
+    - defaults write com.apple.dock autohide-time-modifier -float 0
+```
+
+[Read more](examples/apps.pack).
 
 ## License
 
