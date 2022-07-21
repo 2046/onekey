@@ -1,13 +1,23 @@
 #!/bin/bash
 
-# download latest nodejs package
-curl "https://nodejs.org/dist/latest/node-${VERSION:-$(curl https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg"
+NODE_INSTALLED=0
 
-# install nodejs package
-sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target /
+# check node & npm installed
+if command -v node >/dev/null 2>&1 && command -v npm >/dev/null 2>&1 ; then
+  NODE_INSTALLED=1
+fi
 
-# clean pkg file
-rm $HOME/Downloads/node-latest.pkg
+if [ ${NODE_INSTALLED} == 0 ]
+then
+  # download latest nodejs package
+  curl "https://nodejs.org/dist/latest/node-${VERSION:-$(curl https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg"
+
+  # install nodejs package
+  sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target /
+
+  # clean pkg file
+  rm $HOME/Downloads/node-latest.pkg
+fi
 
 # exceute onekey install apps
 npx -y onekey "$0" "$1"
