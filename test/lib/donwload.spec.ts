@@ -29,14 +29,14 @@ describe('donwload', () => {
   test('download file exception', async () => {
     await expect(async () => {
       await download({
-        url: 'http://example.com/hello/world',
+        url: 'http://example-test.com/hello/world',
         dir: await tmpdir()
       })
     }).rejects.toThrow()
 
     await expect(async () => {
       await download({
-        url: 'http://example.com/hello/test.zip',
+        url: 'http://example-test.com/hello/test.zip',
         dir: await tmpdir()
       })
     }).rejects.toThrow()
