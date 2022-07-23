@@ -2,6 +2,12 @@
 
 Install the applications and system settings needed for a new system with one click, get the system into working condition quickly.
 
+## Feature
+
+- Configuration file encryption
+- Support macos system `dmg` `pkg` `zip` file type
+- Supports installation of apps purchased from the Mac App Store
+
 ## Quickly
 
 Install the app using a script that automatically installs Node.js.
@@ -105,8 +111,13 @@ The contents of the configuration file use `YAML` syntax, and the file extension
   action:
     - install
 - type: app
-  name: Motrix
-  downloadUrl: 'https://github.com/agalwood/Motrix/releases/download/v1.6.11/Motrix-1.6.11.dmg'
+  name: Spectacle
+  downloadUrl: 'https://cdn.javis.cloud/apps/Spectacle%2B1.2.zip'
+  action:
+    - install
+- type: app
+  name: ColorSlurp
+  downloadUrl: 'https://apps.apple.com/cn/app/id1287239339'
   action:
     - install
 ```
