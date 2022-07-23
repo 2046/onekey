@@ -1,6 +1,6 @@
 {
   "name": "onekey",
-  "version": "0.9.37",
+  "version": "0.9.38",
   "description": "one key install apps",
   "main": "./dist/lib/index.js",
   "engines": {
