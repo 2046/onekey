@@ -30,7 +30,7 @@ npx -y onekey [filePath] [password] [tools]
 
 - **`filePath`**: configuration file address, support `local file` or `remote url` or `Github gist`.
 - **`password`**: secret key, if the configuration file is encrypted, it needs to be decrypted using the secret key.
-- **`tools`**: encrypt & decrypt tools, encrypt algorithm: `aes-256-cbc`.
+- **`tools`**: encrypt & decrypt tools, encrypt algorithm: `aes-256-cbc`. [Online Tools](https://onekey.dev/tools.html)
   - use `-e` to encrypt configuration files.
   - use `-d` to decrypt configuration files.
 

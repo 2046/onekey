@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onekey - online config file encrypt & decrypt tools</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      background-color: #f5f5f5;
+    }
+
+    .wrap {
+      width: 100%;
+      height: 100%;
+      padding: 200px 100px;
+    }
+
+    main {
+      width: 100%;
+      height: 100%;
+      padding: 28px 18px;
+      background-color: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 5px;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+    }
+
+    textarea {
+      font-size: 14px;
+      font-weight: 400;
+      color: #000;
+      resize: none;
+    }
+
+    textarea::-webkit-input-placeholder {
+      color: #c0c1c4;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap d-flex justify-content-center align-items-center">
+    <main class="d-flex flex-column">
+      <h2 class="text-center">Onekey configuration file encrypt & decrypt tools</h1>
+      <div class="d-flex flex-fill mt-3">
+        <textarea id="plain" class="form-control text me-3" placeholder="plain text"></textarea>
+        <textarea id="cipher" class="form-control text" placeholder="cipher text"></textarea>
+      </div>
+      <div class="d-flex flex-row-reverse mt-3">
+        <button id="clean" class="btn btn-danger">Clean</button>
+        <button id="decrypt" class="btn btn-primary me-2">Decrypt</button>
+        <button id="encrypt" class="btn btn-primary me-2">Encrypt</button>
+        <input id="password" class="form-control text me-2 w-auto" type="text" placeholder="password">
+      </div>
+    </main>
+  </div>
+  <script>
+    const $clean = document.querySelector('#clean')
+    const $plain = document.querySelector('#plain')
+    const $cipher = document.querySelector('#cipher')
+    const $decrypt = document.querySelector('#decrypt')
+    const $encrypt = document.querySelector('#encrypt')
+    const $password = document.querySelector('#password')
+
+    $clean.addEventListener('click', function() {
+      $plain.value = ''
+      $cipher.value = ''
+      $password.value = ''
+    })
+
+    $encrypt.addEventListener('click', function() {
+      if ($plain.value.trim() === '') {
+        return alert('Please enter plain text')
+      }
+
+      if ($password.value.trim() === '') {
+        return alert('Please enter your password')
+      }
+
+      $cipher.value = encrypt($plain.value, $password.value)
+    })
+
+    $decrypt.addEventListener('click', function() {
+      if ($cipher.value.trim() === '') {
+        return alert('Please enter cipher text')
+      }
+
+      if ($password.value.trim() === '') {
+        return alert('Please enter your password')
+      }
+
+      $plain.value = decrypt($cipher.value, $password.value)
+    })
+
+    function encrypt(data, password) {
+      const iv = CryptoJS.MD5(password)
+      const key = CryptoJS.SHA256(password)
+
+      return CryptoJS.AES.encrypt(data, key, {
+        iv
+      }).ciphertext.toString()
+    }
+
+    function decrypt(data, password) {
+      const iv = CryptoJS.MD5(password)
+      const key = CryptoJS.SHA256(password)
+      const algorithm = CryptoJS.lib.CipherParams.create({
+        ciphertext: CryptoJS.enc.Hex.parse(data)
+      })
+
+      return CryptoJS.AES.decrypt(algorithm, key, {
+        iv
+      }).toString(CryptoJS.enc.Utf8)
+    }
+  </script>
+</body>
+</html>
