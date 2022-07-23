@@ -73,7 +73,7 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
     if (hasCommandTask(result)) {
       console.log(
         '\n',
-        chalk.bgGreen('Tips:'),
+        chalk.bgGreen('Tips'),
         chalk.green("A change in the system default settings is detected, it's recommended to logout or restart system"),
         '\n'
       )
