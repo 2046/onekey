@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import chalk from 'chalk'
 import crypto from './crypto'
 import { Listr } from 'listr2'
 import * as tasks from './tasks'
@@ -62,13 +63,26 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
   )
 
   try {
-    await listr.run({
+    const result = await listr.run({
       text: '',
       tasks: [],
       tmpdir: '',
       filePaths: new Map()
     })
+
+    if (hasCommandTask(result)) {
+      console.log(
+        '\n',
+        chalk.bgGreen('Tips:'),
+        chalk.green("A change in the system default settings is detected, it's recommended to logout or restart system"),
+        '\n'
+      )
+    }
   } catch (error) {
     error
   }
 })()
+
+function hasCommandTask(result: IListrContext) {
+  return !!result.tasks.filter((task) => isCommandType(task)).length
+}
