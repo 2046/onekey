@@ -4,8 +4,8 @@ import { basename } from 'path'
 import { promisify } from 'util'
 import { IListrContext, IPackOpition } from './typing'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
-import { download, install, exec, isAppleCPU, Homebrew_DIR, tmpdir, appdir, isInstalled, commandLineTools } from '../lib'
 import { parse, decrypt, loadFile, isMasUrl, isAppType, isHashCode, isPackFile, isCommandType, resolveMasUrl } from './utils'
+import { download, install, exec, isAppleCPU, Homebrew_DIR, tmpdir, appdir, isInstalled, commandLineTools, isBrewUrl } from '../lib'
 
 export function createFileFormatVerifyTask(filePath: string) {
   return {
@@ -148,6 +148,9 @@ function createDownloadTask(app: IPackOpition) {
       if (isMasUrl(url)) {
         task.title = 'Downloaded'
         ctx.filePaths.set(app.name, resolveMasUrl(url))
+      } else if (isBrewUrl(url)) {
+        task.title = 'Downloaded'
+        ctx.filePaths.set(app.name, url)
       } else {
         try {
           const filePath = await download({

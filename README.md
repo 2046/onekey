@@ -7,6 +7,7 @@ Install the applications and system settings needed for a new system with one cl
 - Configuration file encryption
 - Support macos system `dmg` `pkg` `zip` file type
 - Supports installation of apps purchased from the Mac App Store
+- Support for installing Homebrew apps
 
 ## Quickly
 

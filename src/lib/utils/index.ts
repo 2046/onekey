@@ -34,6 +34,10 @@ export function appdir() {
   return '/Applications'
 }
 
+export function isBrewUrl(url: string) {
+  return url.slice(0, 4).toLowerCase() === 'brew'
+}
+
 export async function tmpdir() {
   return await mkdtemp(join(os.tmpdir(), 'download'))
 }

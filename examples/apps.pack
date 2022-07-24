@@ -109,6 +109,11 @@
   downloadUrl: 'http://127.0.0.1:6688/Homebrew/brew/archive/refs/heads/master.zip'
   action:
     - install
+- type: app
+  name: exa
+  downloadUrl: 'brew install exa'
+  action:
+    - install
 - type: command
   description: Show all file extensions
   cmd: defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true"
