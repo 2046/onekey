@@ -143,6 +143,11 @@
     - defaults write com.apple.dock autohide-delay -float 0
     - defaults write com.apple.dock autohide-time-modifier -float 0
 - type: command
+  description: Add command alias
+  cmd:
+    - echo "alias cls=\"clear\"" >> ~/.zshrc
+    - source ~/.zshrc
+- type: command
   description: Reload dock settings
   cmd: killall Dock
 - type: command
