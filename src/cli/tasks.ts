@@ -74,10 +74,17 @@ export function createInstallAppTasks(ctx: IListrContext) {
               return []
             }
 
-            let actions = [createDownloadTask(app)]
+            let actions: Array<{
+              title: string
+              task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => void
+            }> = [createDownloadTask(app)]
 
             if (app.action && app.action.includes('install')) {
               actions = [...actions, createInstallTask(app)]
+            }
+
+            if (app.action && hasActiveAction(app.action)) {
+              actions = [...actions, createActiveTask(app)]
             }
 
             return task.newListr(actions, {
@@ -189,6 +196,27 @@ function createInstallTask(app: IPackOpition) {
   }
 }
 
+function createActiveTask(app: IPackOpition) {
+  return {
+    title: 'Activating',
+    task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+      try {
+        for (const cmd of getActiveActionCmds(app)) {
+          const { code, stderr } = exec(cmd)
+
+          if (code) {
+            throw new Error(stderr)
+          }
+        }
+
+        task.title = 'Activated'
+      } catch (error) {
+        throw new Error(chalk.red((<Error>error).message))
+      }
+    }
+  }
+}
+
 function createCommandLineToolsTasks() {
   return {
     title: 'CommandLineTools',
@@ -258,4 +286,24 @@ function getDestDirectory(appName: string) {
   } else {
     return appdir()
   }
+}
+
+function hasActiveAction(action: Array<string>) {
+  for (const item of action) {
+    if (Array.isArray(item) && item[0] === 'active') {
+      return true
+    }
+  }
+
+  return false
+}
+
+function getActiveActionCmds(app: IPackOpition) {
+  for (const item of app.action) {
+    if (Array.isArray(item) && item[0] === 'active') {
+      return <Array<string>>item[1]
+    }
+  }
+
+  return []
 }
