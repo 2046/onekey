@@ -6,8 +6,9 @@ Install the applications and system settings needed for a new system with one cl
 
 - Configuration file encryption
 - Support macos system `dmg` `pkg` `zip` file type
-- Supports installation of apps purchased from the Mac App Store
-- Support for installing Homebrew apps
+- Support installation of app purchased from the Mac App Store
+- Support for installing Homebrew app
+- Support activate app or sync app config
 
 ## Quickly
 
@@ -94,7 +95,9 @@ The contents of the configuration file use `YAML` syntax, and the file extension
   name: # application name, only works if type is app
   alias: # application alias, for applications with non-English name, not required
   downloadUrl: # application install link, in the case of mac os, you can also specify the link for the intel and arm versions separately
-  action: # action after application downloaded, usually install
+  action: # action after application downloaded
+    - install # install action for installing app, required
+    - - active # active action for activate app or sync app config, not required
   description: # command description, only works if type is command
   cmd: # command to be executed, can be one or more command, only works if type is command
 ```

@@ -84,6 +84,10 @@
   downloadUrl: 'http://127.0.0.1:6688/assets/release/4.6.2/charles-proxy-4.6.2.dmg'
   action:
     - install
+    - - active
+      - - curl https://charlesproxy.com/config/charles.config > ~/Downloads/charles.config
+        - cp ~/Downloads/charles.config ~/.charles/config/charles.config
+        - chmod 777 ~/.charles/config/charles.config
 - type: app
   name: Alfred 4
   downloadUrl: 'http://127.0.0.1:6688/Alfred_4.6.6_1303.dmg'
