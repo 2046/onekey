@@ -5,7 +5,7 @@ import { promisify } from 'util'
 import { IListrContext, IPackOpition } from './typing'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
 import { parse, decrypt, loadFile, isMasUrl, isAppType, isHashCode, isPackFile, isCommandType, resolveMasUrl } from './utils'
-import { download, install, exec, isAppleCPU, Homebrew_DIR, tmpdir, appdir, isInstalled, commandLineTools, isBrewUrl } from '../lib'
+import { download, install, active, exec, isAppleCPU, Homebrew_DIR, tmpdir, appdir, isInstalled, commandLineTools, isBrewUrl } from '../lib'
 
 export function createFileFormatVerifyTask(filePath: string) {
   return {
@@ -201,13 +201,7 @@ function createActiveTask(app: IPackOpition) {
     title: 'Activating',
     task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
       try {
-        for (const cmd of getActiveActionCmds(app)) {
-          const { code, stderr } = exec(cmd)
-
-          if (code) {
-            throw new Error(stderr)
-          }
-        }
+        active(getActiveActionSteps(app))
 
         task.title = 'Activated'
       } catch (error) {
@@ -298,7 +292,7 @@ function hasActiveAction(action: Array<string>) {
   return false
 }
 
-function getActiveActionCmds(app: IPackOpition) {
+function getActiveActionSteps(app: IPackOpition) {
   for (const item of app.action) {
     if (Array.isArray(item) && item[0] === 'active') {
       return <Array<string>>item[1]
