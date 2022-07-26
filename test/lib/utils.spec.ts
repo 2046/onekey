@@ -68,4 +68,11 @@ describe('lib utils', () => {
 
     expect(Array.isArray(files)).toBeTruthy()
   })
+
+  test('memoize', () => {
+    const add = (a: number, b: number) => a + b
+
+    expect(utils.memoize(add, 1, 2)).toBe(3)
+    expect(utils.memoize(add, 1, 2)).toBe(3)
+  })
 })

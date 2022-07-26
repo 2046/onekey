@@ -94,10 +94,13 @@ describe('tasks', () => {
 
             expect(Array.isArray(result)).toBeTruthy()
             expect(result[0].title).not.toBeNull()
+            expect(result[1].title).not.toBeNull()
 
-            const results = (await result[0].task(_, task)) as Listr<IListrContext, any, any>
+            const results0 = (await result[0].task(_, task)) as Listr<IListrContext, any, any>
+            const results1 = (await result[1].task(_, task)) as Listr<IListrContext, any, any>
 
-            expect(results.tasks.map((item) => item.title)).toEqual(['Downloading', 'Installing'])
+            expect(results0.tasks.map((item) => item.title)).toEqual(['Downloading', 'Installing'])
+            expect(results1.tasks.map((item) => item.title)).toEqual(['Downloading', 'Installing'])
           }
         }
       ],
