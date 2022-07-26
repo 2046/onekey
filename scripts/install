@@ -10,13 +10,16 @@ fi
 if [ ${NODE_INSTALLED} == 0 ]
 then
   # download latest nodejs package
-  curl "https://nodejs.org/dist/latest/node-${VERSION:-$(curl https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg"
+  curl "https://nodejs.org/dist/latest/node-${VERSION:-$(curl -sS https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg"
 
   # install nodejs package
   sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target /
 
   # clean pkg file
   rm $HOME/Downloads/node-latest.pkg
+
+  # clean output
+  reset
 fi
 
 # exceute onekey install apps
