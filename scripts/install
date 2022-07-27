@@ -17,10 +17,10 @@ then
 
   # clean pkg file
   rm $HOME/Downloads/node-latest.pkg
-
-  # clean output
-  reset
 fi
+
+# clean output
+reset
 
 # exceute onekey install apps
 npx -y onekey "$0" "$1"
