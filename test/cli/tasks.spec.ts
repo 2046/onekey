@@ -123,8 +123,8 @@ describe('tasks', () => {
     expect(Array.isArray(result)).toBeTruthy()
     expect(result[0].title).not.toBeNull()
 
-    expect(() => {
-      result[0].task()
+    expect(async () => {
+      await result[0].task()
     }).not.toThrow()
   })
 

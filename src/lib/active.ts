@@ -1,11 +1,23 @@
-import { exec } from './utils'
+import { exec, execute } from './utils'
 
-export default function active(steps: Array<string>) {
+export default async function active(steps: Array<string>) {
   for (const step of steps) {
-    const { code, stderr } = exec(step)
+    if (isSudoCommand(step)) {
+      const { stderr } = await execute(step.replace('sudo', '').trim())
 
-    if (code) {
-      throw new Error(stderr)
+      if (stderr) {
+        throw new Error(stderr.toString())
+      }
+    } else {
+      const { code, stderr } = exec(step)
+
+      if (code) {
+        throw new Error(stderr)
+      }
     }
   }
+}
+
+function isSudoCommand(cmd: string) {
+  return cmd.slice(0, 4) === 'sudo'
 }

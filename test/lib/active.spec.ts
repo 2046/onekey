@@ -1,7 +1,7 @@
 import active from '../../src/lib/active'
 
 describe('active', () => {
-  test('run steps', () => {
-    active(['echo "hello"', 'echo "world"'])
+  test('run steps', async () => {
+    await active(['echo "hello"', 'echo "world"'])
   })
 })

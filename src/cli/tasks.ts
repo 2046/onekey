@@ -5,7 +5,20 @@ import { promisify } from 'util'
 import { IListrContext, IPackOpition } from './typing'
 import { ListrTaskWrapper, ListrDefaultRenderer } from 'listr2'
 import { parse, decrypt, loadFile, isMasUrl, isAppType, isHashCode, isPackFile, isCommandType, resolveMasUrl } from './utils'
-import { download, install, active, exec, isAppleCPU, Homebrew_DIR, tmpdir, appdir, isInstalled, commandLineTools, isBrewUrl } from '../lib'
+import {
+  download,
+  install,
+  active,
+  exec,
+  execute,
+  isAppleCPU,
+  Homebrew_DIR,
+  tmpdir,
+  appdir,
+  isInstalled,
+  commandLineTools,
+  isBrewUrl
+} from '../lib'
 
 export function createFileFormatVerifyTask(filePath: string) {
   return {
@@ -107,13 +120,21 @@ export function createExecCommandTasks(ctx: IListrContext) {
 
       return {
         title,
-        task: () => {
+        task: async () => {
           try {
             for (const cmd of cmds) {
-              const { code, stderr } = exec(cmd)
+              if (isSudoCommand(cmd)) {
+                const { stderr } = await execute(cmd.replace('sudo', '').trim())
 
-              if (code) {
-                throw new Error(stderr)
+                if (stderr) {
+                  throw new Error(stderr.toString())
+                }
+              } else {
+                const { code, stderr } = exec(cmd)
+
+                if (code) {
+                  throw new Error(stderr)
+                }
               }
             }
           } catch (error) {
@@ -199,9 +220,9 @@ function createInstallTask(app: IPackOpition) {
 function createActiveTask(app: IPackOpition) {
   return {
     title: 'Activating',
-    task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+    task: async (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
       try {
-        active(getActiveActionSteps(app))
+        await active(getActiveActionSteps(app))
 
         task.title = 'Activated'
       } catch (error) {
@@ -264,6 +285,10 @@ function createCommandLineToolsTasks() {
           )
     }
   }
+}
+
+function isSudoCommand(cmd: string) {
+  return cmd.slice(0, 4) === 'sudo'
 }
 
 function getDownloadUrl(url: string | Array<Array<string>>) {
