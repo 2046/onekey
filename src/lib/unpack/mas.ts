@@ -1,7 +1,7 @@
 import unpkg from './pkg'
 import { join } from 'path'
 import download from '../donwload'
-import { exec, which, tmpdir, MAS_PKG_URL, APP_DIR } from '../utils'
+import { exec, which, tmpdir, MAS_PKG_URL, APP_DIR, isAppleCPU, pkgutil } from '../utils'
 
 export default async function unmas(appid: string, dest: string) {
   if (!isLogined()) {
@@ -36,5 +36,17 @@ async function installMas() {
     dir: await tmpdir()
   })
 
+  if (isAppleCPU && !isInstallRosetta()) {
+    installRosetta2()
+  }
+
   await unpkg(filePath, APP_DIR)
+}
+
+function isInstallRosetta() {
+  return Object.keys(pkgutil.pkgInfo('com.apple.pkg.RosettaUpdateAuto')).length > 0
+}
+
+function installRosetta2() {
+  exec('softwareupdate --install-rosetta --agree-to-license')
 }
