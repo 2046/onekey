@@ -2,10 +2,11 @@ import active from './active'
 import install from './install'
 import download from './donwload'
 import commandLineTools from './commandlinetools'
-import { tmpdir, isAppleCPU, Homebrew_DIR, exec, execute, isInstalled, appdir, memoize, isBrewUrl } from './utils'
+import { tmpdir, isAppleCPU, Homebrew_DIR, exec, execute, isInstalled, APP_DIR, memoize, isBrewUrl } from './utils'
 
 export {
   isAppleCPU,
+  APP_DIR,
   Homebrew_DIR,
   isInstalled,
   install,
@@ -13,7 +14,6 @@ export {
   active,
   tmpdir,
   exec,
-  appdir,
   memoize,
   commandLineTools,
   isBrewUrl,

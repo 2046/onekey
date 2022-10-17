@@ -3,11 +3,11 @@ import * as pkgutil from './pkgutil'
 import { extname, join } from 'path'
 import { mkdtemp, lstat } from 'fs/promises'
 import { cp, exec, which, execute } from './shell'
-import { MAS_PKG_URL, isAppleCPU, Homebrew_DIR } from './constants'
+import { MAS_PKG_URL, isAppleCPU, Homebrew_DIR, APP_DIR } from './constants'
 
 export { pkgutil }
 export { cp, exec, which, execute }
-export { MAS_PKG_URL, isAppleCPU, Homebrew_DIR }
+export { MAS_PKG_URL, isAppleCPU, Homebrew_DIR, APP_DIR }
 
 interface IMemoize<T extends () => ReturnType<T>> {
   (func: T, ...args: Parameters<T>): ReturnType<T>
@@ -30,10 +30,6 @@ export function extName(filePath: string) {
   }
 }
 
-export function appdir() {
-  return '/Applications'
-}
-
 export function isBrewUrl(url: string) {
   return url.slice(0, 4).toLowerCase() === 'brew'
 }
@@ -44,7 +40,7 @@ export async function tmpdir() {
 
 export async function isInstalled(appName: string) {
   try {
-    const filePath = join(appdir(), `${appName}.app`)
+    const filePath = join(APP_DIR, `${appName}.app`)
 
     return (await lstat(filePath)).isDirectory() ? filePath : ''
   } catch (error) {

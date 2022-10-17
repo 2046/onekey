@@ -14,7 +14,7 @@ import {
   isAppleCPU,
   Homebrew_DIR,
   tmpdir,
-  appdir,
+  APP_DIR,
   isInstalled,
   commandLineTools,
   isBrewUrl
@@ -236,53 +236,37 @@ function createCommandLineToolsTasks() {
   return {
     title: 'CommandLineTools',
     task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-      return commandLineTools.isInstalled()
-        ? task.newListr(
-            [
-              {
-                title: 'Downloading',
-                task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-                  task.title = 'Downloaded'
-                }
-              },
-              {
-                title: 'Installing',
-                task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-                  task.title = 'Installed'
-                }
-              }
-            ],
-            {
-              rendererOptions: {
-                collapse: true
-              }
-            }
-          )
-        : task.newListr(
-            [
-              {
-                title: 'Downloading',
-                task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-                  commandLineTools.download()
+      const isInstalled = commandLineTools.isInstalled()
 
-                  task.title = 'Downloaded'
-                }
-              },
-              {
-                title: 'Installing',
-                task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
-                  commandLineTools.install()
+      return task.newListr(
+        [
+          {
+            title: 'Downloading',
+            task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+              if (!isInstalled) {
+                commandLineTools.download()
+              }
 
-                  task.title = 'Installed'
-                }
-              }
-            ],
-            {
-              rendererOptions: {
-                collapse: true
-              }
+              task.title = 'Downloaded'
             }
-          )
+          },
+          {
+            title: 'Installing',
+            task: (_: IListrContext, task: ListrTaskWrapper<IListrContext, ListrDefaultRenderer>) => {
+              if (!isInstalled) {
+                commandLineTools.install()
+              }
+
+              task.title = 'Installed'
+            }
+          }
+        ],
+        {
+          rendererOptions: {
+            collapse: true
+          }
+        }
+      )
     }
   }
 }
@@ -300,11 +284,7 @@ function getDownloadUrl(url: string | Array<Array<string>>) {
 }
 
 function getDestDirectory(appName: string) {
-  if (appName.toLowerCase() === 'brew') {
-    return Homebrew_DIR
-  } else {
-    return appdir()
-  }
+  return appName.toLowerCase() === 'brew' ? Homebrew_DIR : APP_DIR
 }
 
 function hasActiveAction(action: Array<string>) {

@@ -35,7 +35,7 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
       },
       {
         title: 'Install Apps',
-        skip: (ctx) => !ctx.tasks.filter((task) => isAppType(task))[0],
+        skip: (ctx) => !ctx.tasks.some((task) => isAppType(task)),
         task: (ctx, task) =>
           task.newListr(tasks.createInstallAppTasks(ctx), {
             rendererOptions: { collapse: false }
@@ -43,7 +43,7 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
       },
       {
         title: 'Change Default Settings',
-        skip: (ctx) => !ctx.tasks.filter((task) => isCommandType(task))[0],
+        skip: (ctx) => !ctx.tasks.some((task) => isCommandType(task)),
         task: (ctx, task) =>
           task.newListr(tasks.createExecCommandTasks(ctx), {
             rendererOptions: { collapse: false }

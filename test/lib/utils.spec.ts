@@ -36,11 +36,6 @@ describe('lib utils', () => {
     expect(utils.extName('id1287239339')).toBe('')
   })
 
-  test('appdir', () => {
-    expect(utils.appdir()).not.toBeNull()
-    expect(utils.appdir()).not.toBe('')
-  })
-
   test('tmpdir', async () => {
     const tmpdir = await utils.tmpdir()
     expect((await lstat(tmpdir)).isDirectory()).toBeTruthy()

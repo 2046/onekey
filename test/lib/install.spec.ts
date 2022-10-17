@@ -1,11 +1,11 @@
 import { lstat } from 'fs/promises'
 import install from '../../src/lib/install'
 import download from '../../src/lib/donwload'
-import { tmpdir, exec, appdir } from '../../src/lib/utils'
+import { tmpdir, exec, APP_DIR } from '../../src/lib/utils'
 
 describe('install', () => {
   test('install zip', async () => {
-    exec(`rm -rf /${appdir()}/AppCleaner.app`)
+    exec(`rm -rf /${APP_DIR}/AppCleaner.app`)
 
     const result = await download({
       url: 'http://127.0.0.1:6688/downloads/AppCleaner_3.6.4.zip',
@@ -13,7 +13,7 @@ describe('install', () => {
     })
 
     const filePath = await install({
-      dest: appdir(),
+      dest: APP_DIR,
       appName: 'test',
       filePath: result
     })
@@ -29,7 +29,7 @@ describe('install', () => {
 
     await expect(async () => {
       await install({
-        dest: appdir(),
+        dest: APP_DIR,
         appName: 'test',
         filePath: result
       })
@@ -43,7 +43,7 @@ describe('install', () => {
     })
 
     const filePath = await install({
-      dest: appdir(),
+      dest: APP_DIR,
       appName: 'test',
       filePath: result
     })
@@ -53,7 +53,7 @@ describe('install', () => {
 
   test('install mas', async () => {
     const filePath = await install({
-      dest: appdir(),
+      dest: APP_DIR,
       appName: 'test',
       filePath: '1287239339'
     })
