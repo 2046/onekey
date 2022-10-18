@@ -10,7 +10,6 @@ import {
   install,
   active,
   exec,
-  execute,
   isAppleCPU,
   Homebrew_DIR,
   tmpdir,
