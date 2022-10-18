@@ -124,7 +124,7 @@ export function createExecCommandTasks(ctx: IListrContext) {
           try {
             for (const cmd of cmds) {
               if (isSudoCommand(cmd)) {
-                if (cmd.indexOf('sudo -p')) {
+                if (cmd.indexOf('sudo -p') !== -1) {
                   const { stderr } = await execute(cmd.replace('sudo -p', '').trim())
 
                   if (stderr) {
