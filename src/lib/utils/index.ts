@@ -46,7 +46,23 @@ export async function isInstalled(appName: string) {
   } catch (error) {
     appName = appName.toLowerCase()
 
-    return appName === 'git' ? whichGit() : which(appName)
+    if (appName === 'git') {
+      return whichGit()
+    } else if (appName === 'brew') {
+      return whichBrew()
+    } else {
+      return which(appName)
+    }
+  }
+}
+
+function whichBrew() {
+  if (which('brew')) {
+    return which('brew')
+  } else if (which(`${Homebrew_DIR}/bin/brew`)) {
+    return which(`${Homebrew_DIR}/bin/brew`)
+  } else {
+    return ''
   }
 }
 
