@@ -124,24 +124,16 @@ export function createExecCommandTasks(ctx: IListrContext) {
           try {
             for (const cmd of cmds) {
               if (isSudoCommand(cmd)) {
-                if (cmd.indexOf('sudo -p') !== -1) {
-                  const { stderr } = await execute(cmd.replace('sudo -p', '').trim())
+                const password = await task.prompt<string>({
+                  type: 'password',
+                  name: 'password',
+                  message: 'Enter sudo password?'
+                })
 
-                  if (stderr) {
-                    throw new Error(stderr.toString())
-                  }
-                } else {
-                  const password = await task.prompt<string>({
-                    type: 'password',
-                    name: 'password',
-                    message: 'Enter sudo password?'
-                  })
+                const { stderr } = exec(cmd.replace('sudo', `echo ${password} | sudo -S`).trim())
 
-                  const { stderr } = exec(cmd.replace('sudo', `echo ${password} | sudo -S`).trim())
-
-                  if (stderr) {
-                    throw new Error(stderr.toString())
-                  }
+                if (stderr && stderr !== 'Password:') {
+                  throw new Error(stderr.toString())
                 }
               } else {
                 const { code, stderr } = exec(cmd)
