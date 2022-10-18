@@ -46,6 +46,7 @@ const [filePath = '', password = '', op = ''] = process.argv.slice(2)
         skip: (ctx) => !ctx.tasks.some((task) => isCommandType(task)),
         task: (ctx, task) =>
           task.newListr(tasks.createExecCommandTasks(ctx), {
+            exitOnError: false,
             rendererOptions: { collapse: false }
           })
       },
