@@ -16,7 +16,8 @@ import {
   APP_DIR,
   isInstalled,
   commandLineTools,
-  isBrewUrl
+  isBrewUrl,
+  execute
 } from '../lib'
 
 export function createFileFormatVerifyTask(filePath: string) {
@@ -123,16 +124,24 @@ export function createExecCommandTasks(ctx: IListrContext) {
           try {
             for (const cmd of cmds) {
               if (isSudoCommand(cmd)) {
-                const password = await task.prompt<string>({
-                  type: 'password',
-                  name: 'password',
-                  message: 'Enter sudo password?'
-                })
+                if (cmd.indexOf('sudo -p')) {
+                  const { stderr } = await execute(cmd.replace('sudo -p', '').trim())
 
-                const { stderr } = exec(cmd.replace('sudo', `echo ${password} | sudo -S`).trim())
+                  if (stderr) {
+                    throw new Error(stderr.toString())
+                  }
+                } else {
+                  const password = await task.prompt<string>({
+                    type: 'password',
+                    name: 'password',
+                    message: 'Enter sudo password?'
+                  })
 
-                if (stderr) {
-                  throw new Error(stderr.toString())
+                  const { stderr } = exec(cmd.replace('sudo', `echo ${password} | sudo -S`).trim())
+
+                  if (stderr) {
+                    throw new Error(stderr.toString())
+                  }
                 }
               } else {
                 const { code, stderr } = exec(cmd)
