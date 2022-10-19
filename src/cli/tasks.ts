@@ -16,8 +16,7 @@ import {
   APP_DIR,
   isInstalled,
   commandLineTools,
-  isBrewUrl,
-  execute
+  isBrewUrl
 } from '../lib'
 
 export function createFileFormatVerifyTask(filePath: string) {
