@@ -17,12 +17,13 @@ export default {
       `)
 
         await decompress(filePath, dest, { strip: 1 })
-
         await execute(`
           echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /Users/${whoami}/.zprofile &&
           echo 'eval "$(${dest}/bin/brew shellenv)"' >> /Users/${whoami}/.zprofile &&
           eval "$(${dest}/bin/brew shellenv)"
         `)
+
+        return `${dest}/bin/brew`
       } else {
         await execute(`
           chmod u+rwx /usr/local/bin /usr/local/include /usr/local/lib /usr/local/share /usr/local/share/doc /usr/local/share/man /usr/local/share/man/man1 &&
@@ -42,9 +43,10 @@ export default {
       `)
 
         await decompress(filePath, dest, { strip: 1 })
-      }
+        await execute(`ln -sf ${dest}/bin/brew /usr/local/bin/brew`)
 
-      return `${dest}/bin/brew`
+        return '/usr/local/bin/brew'
+      }
     } catch (error) {
       throw (<NodeJS.ErrnoException>error).code === 'EEXIST' ? new Error('file already exists') : error
     }
