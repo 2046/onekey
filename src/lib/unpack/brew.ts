@@ -21,6 +21,7 @@ export default {
           echo '# Set PATH, MANPATH, etc., for Homebrew.' >> /Users/${whoami}/.zprofile &&
           echo 'eval "$(${dest}/bin/brew shellenv)"' >> /Users/${whoami}/.zprofile &&
           eval "$(${dest}/bin/brew shellenv)"
+          export PATH=$PATH:${dest}/bin
         `)
 
         return `${dest}/bin/brew`
